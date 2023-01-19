@@ -17,4 +17,11 @@ public class InstallResult {
         return new InstallResult(200, null);
     }
 
+    public static InstallResult failed() {
+        return new InstallResult(400, null);
+    }
+
+    public boolean isSuccess() {
+        return code==200;
+    }
 }

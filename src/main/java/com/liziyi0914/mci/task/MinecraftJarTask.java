@@ -1,77 +1,59 @@
 package com.liziyi0914.mci.task;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
-import com.liziyi0914.mci.Constants;
+import com.liziyi0914.mci.Identifiers;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
+import com.liziyi0914.mci.bean.SubTaskInfo;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.Objects;
 import java.util.Optional;
 
+@Data
 @Slf4j
+@AllArgsConstructor
 public class MinecraftJarTask implements Task {
 
+    SubTaskInfo info;
+
     @Override
-    public InstallResult execute(InstallContext ctx) throws IOException {
-        Path minecraftRoot = ctx.get(Constants.VAR_MINECRAFT_ROOT);
-        String id = ctx.get(Constants.VAR_ID);
-        String version = ctx.get(Constants.VAR_MINECRAFT_VERSION);
-        FileInfo jarFile = ctx.get(Constants.VAR_MINECRAFT_JAR_FILE);
+    public InstallResult execute(InstallContext ctx) {
+        FileInfo jarFile = ctx.get(Identifiers.VAR_MINECRAFT_JAR_FILE);
         String url = jarFile.getUrl();
-        String hash = jarFile.getHash();
+        File file = jarFile.getFile();
+
+        SubTaskInfo subTaskInfo = getInfo();
+        subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
 
         log.info("开始执行Minecraft JAR任务");
 
         log.info("Minecraft JAR文件链接: {}", url);
 
-        OkHttpClient client = Utils.getClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
+        try {
+            Optional<File> jsonOpt = Utils.downloadSync(url,file);
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response.code());
+            if (!jsonOpt.isPresent()) {
+                throw new IOException("下载失败");
             }
-
-            ResponseBody body = response.body();
-
-            if (Objects.isNull(body)) {
-                throw new IOException("Unexpected code " + response.code());
-            }
-
-            InputStream in = body.byteStream();
-
-            IoUtil.copy(
-                    in,
-                    FileUtil.getOutputStream(
-                            FileUtil.file(minecraftRoot.toFile(), "versions", id, id + ".jar")
-                    )
-            );
-
-            in.close();
 
             log.info("Minecraft JAR文件写入完成");
+
+            if (!Utils.checkHashOrExists(jarFile.getHash(),file)) {
+                throw new IOException("文件校验失败");
+            }
         } catch (IOException e) {
             log.error("Minecraft JAR任务执行失败",e);
-            throw new RuntimeException(e);
+            subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);
+            return InstallResult.failed();
         }
 
         log.info("Minecraft JAR任务执行成功");
+        subTaskInfo.update(65535, "成功", SubTaskInfo.STATUS_SUCCESS);
 
         return InstallResult.success();
     }

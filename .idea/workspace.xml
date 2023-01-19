@@ -4,41 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="69680aa5-32b2-4440-a1e3-e2b2c62d3f0a" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Identifier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/MinecraftInstall.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/TaskException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/TaskExecutor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Utils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/DownloadBuffer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/FileInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/InstallContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/InstallRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/InstallResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftJarTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftJsonTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftLibrariesTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftVersionManifestTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/Task.java" afterDir="false" />
+    <list default="true" id="69680aa5-32b2-4440-a1e3-e2b2c62d3f0a" name="变更" comment="version 1.0">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DsmViewSettings">
+    <option name="groupByPackages" value="false" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -119,25 +94,51 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/Projects/minecraft-installer/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "SDK",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "copyright.profiles",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Projects\minecraft-installer\src\main\resources" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="com.liziyi0914.mci.mirror" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.liziyi0914.mci.task" />
+      <recent name="com.liziyi0914.mci.mirror" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.minecraft-installer [distZip]">
+  <component name="RunManager" selected="Gradle.minecraft-installer [run]">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.liziyi0914.mci.Main" />
+      <module name="minecraft-installer.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.liziyi0914.mci.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="minecraft-installer [distZip]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -159,7 +160,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="minecraft-installer [runShadow]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="minecraft-installer [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -170,7 +171,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="runShadow" />
+            <option value="jar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -201,11 +202,34 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="minecraft-installer [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="shadowJar" />
+          </list>
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.minecraft-installer [distZip]" />
-        <item itemvalue="Gradle.minecraft-installer [runShadow]" />
         <item itemvalue="Gradle.minecraft-installer [run]" />
+        <item itemvalue="Gradle.minecraft-installer [shadowJar]" />
+        <item itemvalue="Gradle.minecraft-installer [jar]" />
+        <item itemvalue="应用程序.Main" />
+        <item itemvalue="Gradle.minecraft-installer [distZip]" />
       </list>
     </recent_temporary>
   </component>
@@ -222,11 +246,38 @@
       <workItem from="1672855270385" duration="13730000" />
       <workItem from="1672947959191" duration="15417000" />
       <workItem from="1673085328390" duration="1499000" />
-      <workItem from="1673447787907" duration="17022000" />
+      <workItem from="1673447787907" duration="18709000" />
+      <workItem from="1673498918211" duration="19358000" />
+      <workItem from="1673663305156" duration="1000" />
+      <workItem from="1673663337133" duration="3272000" />
+      <workItem from="1673694176236" duration="654000" />
+      <workItem from="1673851882238" duration="25587000" />
+      <workItem from="1674159560417" duration="7783000" />
     </task>
+    <task id="LOCAL-00001" summary="init">
+      <created>1673486480858</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1673486480858</updated>
+    </task>
+    <task id="LOCAL-00002" summary="version 1.0">
+      <created>1674167623464</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1674167623464</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <MESSAGE value="version 1.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="version 1.0" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

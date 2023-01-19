@@ -23,28 +23,28 @@ import java.util.stream.Collectors;
 @Data
 @Slf4j
 @AllArgsConstructor
-public class MinecraftLibrariesTask implements Task {
+public class MinecraftAssetsTask implements Task {
 
     SubTaskInfo info;
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        List<FileInfo> libraryFiles = ctx.get(Identifiers.VAR_MINECRAFT_LIBRARY_FILES);
+        List<FileInfo> assetFiles = ctx.get(Identifiers.VAR_MINECRAFT_ASSET_FILES);
         boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
 
-        log.info("开始执行Minecraft Libraries任务");
+        log.info("开始执行Minecraft Assets任务");
 
-        int total = libraryFiles.size();
+        int total = assetFiles.size();
 
-        log.info("共有{}个库文件需要下载", total);
+        log.info("共有{}个资源文件需要下载", total);
 
         try {
             AtomicInteger _current = new AtomicInteger();
             double per = 1.0d / ((double)total) * 65535.0;
-            List<FileInfo> fails = Flowable.fromIterable(libraryFiles)
+            List<FileInfo> fails = Flowable.fromIterable(assetFiles)
                     .flatMap((Function<FileInfo, Publisher<Optional<FileInfo>>>) info -> {
                         int current = _current.getAndIncrement();
                         subTaskInfo.update((int)(current * per), "下载 "+info.getName(), SubTaskInfo.STATUS_RUNNING);
@@ -64,17 +64,17 @@ public class MinecraftLibrariesTask implements Task {
                                     String url = info.getUrl();
                                     Optional<File> fileOpt = Utils.downloadSyncEx(url, f);
                                     if (fileOpt.isPresent()) {
-                                        log.info("[{}] 下载完成", fileOpt.get().getName());
+                                        log.info("[{}] 下载完成", info.getHash());
                                     } else {
-                                        log.error("[{}] 下载失败", info.getName());
+                                        log.error("[{}] 下载失败", info.getHash());
                                         for (int i = 0; i < 3; i++) {
-                                            log.info("[{}] 第{}次重试", info.getName(), i+1);
+                                            log.info("[{}] 第{}次重试", info.getHash(), i+1);
                                             fileOpt = Utils.downloadSyncEx(url, file);
                                             if (fileOpt.isPresent()) {
-                                                log.info("[{}] 下载完成", fileOpt.get().getName());
+                                                log.info("[{}] 下载完成", info.getHash());
                                                 break;
                                             } else {
-                                                log.error("[{}] 下载失败", info.getName());
+                                                log.error("[{}] 下载失败", info.getHash());
                                             }
                                         }
                                     }
@@ -91,17 +91,18 @@ public class MinecraftLibrariesTask implements Task {
                     .collect(Collectors.toList())
                     .blockingGet();
 
-            log.info("下载完成，共有{}个库文件下载失败", fails.size());
+            log.info("下载完成，共有{}个资源文件下载失败", fails.size());
 
             ctx.addAll(Identifiers.VAR_FILES_FAILED,fails);
         } catch (RuntimeException e) {
-            log.error("Minecraft Libraries任务执行失败",e);
+            log.error("Minecraft Assets任务执行失败",e);
             subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);
             return InstallResult.failed();
         }
 
-        log.info("Minecraft Libraries任务执行成功");
-        subTaskInfo.update(65535, "成功", SubTaskInfo.STATUS_SUCCESS);
+        log.info("Minecraft Assets任务执行成功");
+
+        subTaskInfo.update(65535, "完成", SubTaskInfo.STATUS_SUCCESS);
 
         return InstallResult.success();
     }
