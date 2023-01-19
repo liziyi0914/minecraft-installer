@@ -1,11 +1,28 @@
 package com.liziyi0914.mci;
 
 import com.liziyi0914.mci.bean.FileInfo;
+import com.liziyi0914.mci.mirror.Mirror;
 
 import java.nio.file.Path;
 import java.util.List;
 
-public class Constants {
+public class Identifiers {
+
+    /** 任务ID
+     */
+    public static final Identifier<Long> VAR_TASK_ID = Identifier.of(Long.class);
+
+    /** 任务名称
+     */
+    public static final Identifier<String> VAR_TASK_NAME = Identifier.of(String.class);
+
+    /** 镜像站
+     */
+    public static final Identifier<Mirror> VAR_MIRROR = Identifier.of(Mirror.class);
+
+    /** 覆盖已有文件
+     */
+    public static final Identifier<Boolean> VAR_OVERRIDE_EXISTS = Identifier.of(Boolean.class);
 
     /** 版本id
      */
@@ -39,8 +56,16 @@ public class Constants {
      */
     public static final Identifier<List<FileInfo>> VAR_MINECRAFT_LIBRARY_FILES = Identifier.list(FileInfo.class);
 
-    /** Minecraft Library files 失败文件清单
+    /** 失败文件清单
      */
-    public static final Identifier<List<FileInfo>> VAR_MINECRAFT_LIBRARY_FILES_FAILED = Identifier.list(FileInfo.class);
+    public static final Identifier<List<FileInfo>> VAR_FILES_FAILED = Identifier.list(FileInfo.class);
+
+    /** Minecraft Assets是否存入virtual文件夹
+     */
+    public static final Identifier<Boolean> VAR_MINECRAFT_ASSET_INDEX_VIRTUAL = Identifier.of(Boolean.class);
+
+    /** Minecraft Asset files
+     */
+    public static final Identifier<List<FileInfo>> VAR_MINECRAFT_ASSET_FILES = Identifier.list(FileInfo.class);
 
 }

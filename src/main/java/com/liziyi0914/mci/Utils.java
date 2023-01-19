@@ -1,37 +1,29 @@
 package com.liziyi0914.mci;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
-import com.google.gson.Gson;
-import com.liziyi0914.mci.bean.DownloadBuffer;
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class Utils {
 
     private static OkHttpClient httpClient = null;
-
-    private static final Gson gson = new Gson();
 
     public static OkHttpClient getClient() {
         if (Objects.isNull(httpClient)) {
@@ -41,38 +33,135 @@ public class Utils {
         return httpClient;
     }
 
-    public static Gson gson() {
-        return gson;
+    public static boolean checkHash(String hash,File file) {
+        if (Objects.isNull(hash) || !file.exists()) {
+            return false;
+        }
+        if (hash.length()==32) {
+            return hash.equalsIgnoreCase(DigestUtil.md5Hex(file));
+        } else if (hash.length()==40) {
+            return hash.equalsIgnoreCase(DigestUtil.sha1Hex(file));
+        } else if (hash.length()==64) {
+            return hash.equalsIgnoreCase(DigestUtil.sha256Hex(file));
+        } else {
+            return false;
+        }
     }
 
-    public static Optional<File> downloadSync(String url, File file) {
+    public static boolean checkHashOrExists(String hash,File file) {
+        if (Objects.isNull(hash)) {
+            return file.exists();
+        }
+        if (hash.length()==32) {
+            return hash.equalsIgnoreCase(DigestUtil.md5Hex(file));
+        } else if (hash.length()==40) {
+            return hash.equalsIgnoreCase(DigestUtil.sha1Hex(file));
+        } else if (hash.length()==64) {
+            return hash.equalsIgnoreCase(DigestUtil.sha256Hex(file));
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkBufferHash(String hash,byte[] buffer) {
+        if (Objects.isNull(hash)) {
+            return true;
+        }
+        if (hash.length()==32) {
+            return hash.equalsIgnoreCase(DigestUtil.md5Hex(buffer));
+        } else if (hash.length()==40) {
+            return hash.equalsIgnoreCase(DigestUtil.sha1Hex(buffer));
+        } else if (hash.length()==64) {
+            return hash.equalsIgnoreCase(DigestUtil.sha256Hex(buffer));
+        } else {
+            return false;
+        }
+    }
+
+    public static void downloadSync(String url, DownloadCallback callback) throws Exception {
         OkHttpClient client = getClient();
         Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .build();
+
+        Response response = client.newCall(request).execute();
+        ResponseBody body = response.body();
+        if (Objects.isNull(body)) {
+            throw new IOException();
+        }
+        InputStream in = body.byteStream();
+
+        callback.handle(in);
+
+        in.close();
+        body.close();
+        response.close();
+    }
+
+    public static Optional<File> downloadSync(String url, File file) {
+//        OkHttpClient client = getClient();
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .get()
+//                .build();
+//        try {
+//            Response response = client.newCall(request).execute();
+//            ResponseBody body = response.body();
+//            if (Objects.isNull(body)) {
+//                return Optional.empty();
+//            }
+//            InputStream in = body.byteStream();
+//            OutputStream out = FileUtil.getOutputStream(file);
+//            byte[] buffer = new byte[4 * 1024];
+//            int len;
+//            while ((len = in.read(buffer)) != -1) {
+//                out.write(buffer, 0, len);
+//            }
+//            in.close();
+//            out.close();
+//            body.close();
+//            response.close();
+//        } catch (IOException e) {
+//            return Optional.empty();
+//        }
+//
+//        return Optional.of(file);
+
         try {
-            Response response = client.newCall(request).execute();
-            ResponseBody body = response.body();
-            if (Objects.isNull(body)) {
-                return Optional.empty();
-            }
-            InputStream in = body.byteStream();
-            OutputStream out = FileUtil.getOutputStream(file);
-            byte[] buffer = new byte[4 * 1024];
-            int len;
-            while ((len = in.read(buffer)) != -1) {
-                out.write(buffer, 0, len);
-            }
-            in.close();
-            out.close();
-            body.close();
-            response.close();
-        } catch (IOException e) {
+            downloadSync(url, in->{
+                OutputStream out = FileUtil.getOutputStream(file);
+                byte[] buffer = new byte[4 * 1024];
+                int len;
+                while ((len = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, len);
+                }
+                out.close();
+            });
+        } catch (Exception e) {
             return Optional.empty();
         }
 
         return Optional.of(file);
+    }
+
+    public static Optional<String> downloadSync(String url) {
+        try {
+            AtomicReference<String> s = new AtomicReference<>("");
+            downloadSync(url, in->{
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4 * 1024];
+                int len;
+                while ((len = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, len);
+                }
+                s.set(out.toString("UTF-8"));
+                out.close();
+            });
+            return Optional.of(s.get());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     public static Optional<File> downloadSyncEx(String url, File file) {
@@ -82,6 +171,19 @@ public class Utils {
                     @Override
                     protected void subscribeActual(@NonNull Observer<? super Optional<File>> observer) {
                         log.warn("[{}] 下载超时", file.getName());
+                        observer.onNext(Optional.empty());
+                    }
+                })
+                .blockingFirst();
+    }
+
+    public static Optional<String> downloadSyncEx(String url) {
+        return Observable.just(0)
+                .map(__ -> downloadSync(url))
+                .timeout(120, TimeUnit.SECONDS, Schedulers.io(), new Observable<Optional<String>>() {
+                    @Override
+                    protected void subscribeActual(@NonNull Observer<? super Optional<String>> observer) {
+                        log.warn("下载超时 [{}]",url);
                         observer.onNext(Optional.empty());
                     }
                 })
@@ -123,5 +225,9 @@ public class Utils {
             os = "UNKNOWN";
         }
         return os;
+    }
+
+    public interface DownloadCallback {
+        void handle(InputStream in) throws Exception;
     }
 }

@@ -11,6 +11,7 @@ import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 
@@ -23,40 +24,33 @@ import java.util.stream.Collectors;
 @Data
 @Slf4j
 @AllArgsConstructor
-public class MinecraftLibrariesTask implements Task {
+public class RetryTask implements Task {
 
+    @Getter
     SubTaskInfo info;
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        List<FileInfo> libraryFiles = ctx.get(Identifiers.VAR_MINECRAFT_LIBRARY_FILES);
-        boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
+        List<FileInfo> infos = ctx.get(Identifiers.VAR_FILES_FAILED);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
 
-        log.info("开始执行Minecraft Libraries任务");
+        log.info("开始执行Retry任务");
 
-        int total = libraryFiles.size();
+        int total = infos.size();
 
-        log.info("共有{}个库文件需要下载", total);
+        log.info("共有{}个文件需要重新下载", total);
 
         try {
             AtomicInteger _current = new AtomicInteger();
             double per = 1.0d / ((double)total) * 65535.0;
-            List<FileInfo> fails = Flowable.fromIterable(libraryFiles)
+            List<FileInfo> fails = Flowable.fromIterable(infos)
                     .flatMap((Function<FileInfo, Publisher<Optional<FileInfo>>>) info -> {
                         int current = _current.getAndIncrement();
                         subTaskInfo.update((int)(current * per), "下载 "+info.getName(), SubTaskInfo.STATUS_RUNNING);
 
                         File file = info.getFile();
-
-                        String hash = info.getHash();
-                        if (Utils.checkHash(hash,file) && !override) {
-                            log.info("[{}] 已存在", file.getName());
-                            return Flowable.just(Optional.empty());
-                        }
-
                         return Flowable.just(file)
                                 .observeOn(Schedulers.io())
                                 .map(f -> {
@@ -79,7 +73,7 @@ public class MinecraftLibrariesTask implements Task {
                                         }
                                     }
 
-                                    if (fileOpt.isPresent() && Utils.checkHashOrExists(hash, fileOpt.get())) {
+                                    if (fileOpt.isPresent()) {
                                         return Optional.empty();
                                     } else {
                                         return Optional.of(info);
@@ -91,19 +85,22 @@ public class MinecraftLibrariesTask implements Task {
                     .collect(Collectors.toList())
                     .blockingGet();
 
-            log.info("下载完成，共有{}个库文件下载失败", fails.size());
-
-            ctx.addAll(Identifiers.VAR_FILES_FAILED,fails);
+            if (fails.size() > 0) {
+                log.error("下载失败，共有{}个文件下载失败", fails.size());
+                log.error("Retry任务执行失败");
+                subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);
+                return InstallResult.failed();
+            } else {
+                log.info("下载完成");
+                log.info("Retry任务执行成功");
+                subTaskInfo.update(65535, "完成", SubTaskInfo.STATUS_SUCCESS);
+                return InstallResult.success();
+            }
         } catch (RuntimeException e) {
-            log.error("Minecraft Libraries任务执行失败",e);
+            log.error("Retry任务执行失败",e);
             subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);
             return InstallResult.failed();
         }
-
-        log.info("Minecraft Libraries任务执行成功");
-        subTaskInfo.update(65535, "成功", SubTaskInfo.STATUS_SUCCESS);
-
-        return InstallResult.success();
     }
 
 }
