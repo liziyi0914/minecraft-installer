@@ -120,22 +120,24 @@ public class MinecraftJsonTask implements Task {
                             JSONObject artifact = downloads.getJSONObject("artifact");
 
                             List<FileInfo> files = new ArrayList<>();
-                            files.add(
-                                    FileInfo.builder()
-                                            .id(o.getStr("name"))
-                                            .name(Utils.mavenFileName(o.getStr("name")))
-                                            .url(mirror.minecraftLibrary(artifact.getStr("url")))
-                                            .hash(artifact.getStr("sha1"))
-                                            .file(FileUtil.file(
-                                                    minecraftRoot.toFile(),
-                                                    "libraries",
-                                                    Utils.mavenPath(o.getStr("name")),
-                                                    Utils.mavenFileName(o.getStr("name"))
-                                            ))
-                                            .build()
-                            );
+                            if (Objects.nonNull(artifact)) {
+                                files.add(
+                                        FileInfo.builder()
+                                                .id(o.getStr("name"))
+                                                .name(Utils.mavenFileName(o.getStr("name")))
+                                                .url(mirror.minecraftLibrary(artifact.getStr("url")))
+                                                .hash(artifact.getStr("sha1"))
+                                                .file(FileUtil.file(
+                                                        minecraftRoot.toFile(),
+                                                        "libraries",
+                                                        Utils.mavenPath(o.getStr("name")),
+                                                        Utils.mavenFileName(o.getStr("name"))
+                                                ))
+                                                .build()
+                                );
+                            }
 
-                            if (!Objects.isNull(classifiers)) {
+                            if (Objects.nonNull(classifiers)) {
                                 String os = Utils.getOs();
                                 Optional.ofNullable(o.getJSONObject("natives"))
                                         .map(obj->obj.getStr(os))
@@ -165,7 +167,7 @@ public class MinecraftJsonTask implements Task {
                         .distinct()
                         .peek(fileInfo -> log.info("Minecraft Library文件: {}", fileInfo.getName()))
                         .collect(Collectors.toList());
-                ctx.put(Identifiers.VAR_MINECRAFT_LIBRARY_FILES, list);
+                ctx.put(Identifiers.VAR_LIBRARY_FILES, list);
             }
 
             subTaskInfo.update(57343, "解析中", SubTaskInfo.STATUS_RUNNING);

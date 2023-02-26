@@ -5,11 +5,13 @@ import cn.hutool.json.JSONUtil;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.TaskInfo;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -28,6 +30,10 @@ public class WebSocketCollector extends WebSocketListener implements Collector {
     int heartbeatCache = 0;
 
     int state = 0;
+
+    Disposable heartbeat;
+
+    TaskInfo taskInfo;
 
     private WebSocketCollector() {
     }
@@ -50,6 +56,7 @@ public class WebSocketCollector extends WebSocketListener implements Collector {
 
     @Override
     public void commit(TaskInfo info) {
+        this.taskInfo = info;
         JSONObject json = new JSONObject();
         json.set("op",2);
         json.set("d", info);
@@ -58,14 +65,20 @@ public class WebSocketCollector extends WebSocketListener implements Collector {
 
     @Override
     public void close() {
+        JSONObject json = new JSONObject();
+        json.set("op",2);
+        json.set("d", this.taskInfo);
+        ws.send(json.toString());
+
         ws.close(1000, "close");
+        Optional.ofNullable(this.heartbeat).ifPresent(Disposable::dispose);
     }
 
     @Override
     public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
         webSocket.send("{\"op\":0,\"token\":\""+token+"\"}");
 
-        Observable.interval(30, TimeUnit.SECONDS)
+        this.heartbeat = Observable.interval(15, TimeUnit.SECONDS)
                 .takeUntil((Predicate<? super Long>) t->!webSocket.send("{\"op\":1}"))
                 .subscribe(t->{
                     if (state!=1) {

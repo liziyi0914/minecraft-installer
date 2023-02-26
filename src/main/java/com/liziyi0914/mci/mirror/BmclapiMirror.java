@@ -41,4 +41,10 @@ public class BmclapiMirror extends OfficialMirror {
         return url.replaceAll("https?://.*?\\.mojang\\.com","https://"+ domain());
     }
 
+    @Override
+    public String forge(String url) {
+        return url
+                .replace("https://maven.minecraftforge.net","https://"+domain()+"/maven")
+                .replace("https://files.minecraftforge.net/maven","https://"+domain()+"/maven");
+    }
 }

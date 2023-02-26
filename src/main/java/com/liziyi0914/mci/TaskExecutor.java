@@ -5,6 +5,7 @@ import com.liziyi0914.mci.bean.SubTaskInfo;
 import com.liziyi0914.mci.bean.TaskInfo;
 import com.liziyi0914.mci.collector.Collector;
 import com.liziyi0914.mci.task.MultiTask;
+import com.liziyi0914.mci.task.SimpleTask;
 import com.liziyi0914.mci.task.Task;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 @Slf4j
 public class TaskExecutor {
@@ -28,9 +30,12 @@ public class TaskExecutor {
     }
 
     public TaskExecutor then(Task task) {
-        task.getInfo().setIndex(count);
         tasks.add(task);
-        count++;
+        SubTaskInfo subTaskInfo = task.getInfo();
+        if (Objects.nonNull(subTaskInfo)) {
+            subTaskInfo.setIndex(count);
+            count++;
+        }
         return this;
     }
 
@@ -40,6 +45,29 @@ public class TaskExecutor {
             count++;
         }
         tasks.add(new MultiTask(task));
+        return this;
+    }
+
+    public TaskExecutor thenShadow(InstallContext ctx, List<Identifier<?>> identifiers, Consumer<InstallContext> ctxFunction, Consumer<TaskExecutor> executorFunction) {
+        Map<Identifier<?>, Object> identifierMap = new HashMap<>();
+        for (Identifier<?> identifier : identifiers) {
+            identifierMap.put(identifier, ctx.get(identifier));
+        }
+
+        this.then(new SimpleTask(()->{
+            ctxFunction.accept(ctx);
+            return true;
+        }));
+
+        executorFunction.accept(this);
+
+        this.then(new SimpleTask(()->{
+            for (Identifier<?> identifier : identifiers) {
+                identifier.putIntoContext(ctx, identifierMap.get(identifier));
+            }
+            return true;
+        }));
+
         return this;
     }
 

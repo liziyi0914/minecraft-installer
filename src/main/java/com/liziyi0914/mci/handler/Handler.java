@@ -8,6 +8,8 @@ public interface Handler {
 
     boolean canHandle(Cmd cmd);
 
+    void genSubTasks(Cmd cmd, InstallContext ctx, TaskExecutor executor);
+
     void handle(Cmd cmd, InstallContext ctx, TaskExecutor executor);
 
 }

@@ -41,6 +41,9 @@ public class Cmd implements Callable<Integer> {
     @Option(names = {"--mc"}, description = "Minecraft版本", required = true)
     String minecraft;
 
+    @Option(names = {"--forge"}, description = "Forge build", required = false)
+    String forge;
+
     @Option(names = {"--ws-url"}, description = "WebSocket地址")
     String ws;
 
@@ -58,10 +61,6 @@ public class Cmd implements Callable<Integer> {
         }
 
         InstallContext ctx = new InstallContext();
-
-        ctx.put(Identifiers.VAR_MIRROR, Mirrors.OFFICIAL);
-        ctx.put(Identifiers.VAR_MIRROR, Mirrors.BMCLAPI);
-        ctx.put(Identifiers.VAR_MIRROR, Mirrors.MCBBS);
 
         switch (getMirror().toLowerCase()) {
             case "bmclapi":
@@ -82,6 +81,8 @@ public class Cmd implements Callable<Integer> {
 
         ctx.put(Identifiers.VAR_TASK_ID, new Random().nextLong());
 
+        ctx.put(Identifiers.VAR_MULTI_THREAD, isMultiThread());
+
         TaskExecutor executor = new TaskExecutor();
 
         if (Objects.nonNull(ws)) {
@@ -90,7 +91,9 @@ public class Cmd implements Callable<Integer> {
             executor.collector(webSocketCollector);
         }
 
-        if (Handlers.MINECRAFT.canHandle(this)) {
+        if (Handlers.FORGE.canHandle(this)) {
+            Handlers.FORGE.handle(this, ctx, executor);
+        } else if (Handlers.MINECRAFT.canHandle(this)) {
             Handlers.MINECRAFT.handle(this, ctx, executor);
         } else {
             log.error("找不到安装流程");

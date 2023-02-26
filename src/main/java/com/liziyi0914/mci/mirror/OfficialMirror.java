@@ -37,4 +37,9 @@ public class OfficialMirror extends Mirror {
         return url;
     }
 
+    @Override
+    public String forge(String url) {
+        return url;
+    }
+
 }

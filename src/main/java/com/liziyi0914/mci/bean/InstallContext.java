@@ -19,6 +19,22 @@ public class InstallContext {
         map.put(key, value);
     }
 
+    public <K,V> void mapPut(Identifier<Map<K,V>> id, K key, V value) {
+        Optional<Map<K,V>> mapOpt = getOpt(id);
+        Map<K,V> m;
+        if (!mapOpt.isPresent()) {
+            m = new HashMap<>();
+            put(id, m);
+        } else {
+            m = mapOpt.get();
+        }
+        m.put(key, value);
+    }
+
+    public <K,V> V mapGet(Identifier<Map<K,V>> id, K key) {
+        return getOpt(id).map(m -> m.get(key)).orElse(null);
+    }
+
     public <T,S extends Collection<T>> void addAll(Identifier<S> key, S value) {
         Optional<S> opt = getOpt(key);
         if (opt.isPresent()) {

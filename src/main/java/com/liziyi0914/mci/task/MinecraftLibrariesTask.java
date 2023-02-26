@@ -29,13 +29,13 @@ public class MinecraftLibrariesTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        List<FileInfo> libraryFiles = ctx.get(Identifiers.VAR_MINECRAFT_LIBRARY_FILES);
+        List<FileInfo> libraryFiles = ctx.get(Identifiers.VAR_LIBRARY_FILES);
         boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
 
-        log.info("开始执行Minecraft Libraries任务");
+        log.info("开始执行Libraries任务");
 
         int total = libraryFiles.size();
 
@@ -95,12 +95,12 @@ public class MinecraftLibrariesTask implements Task {
 
             ctx.addAll(Identifiers.VAR_FILES_FAILED,fails);
         } catch (RuntimeException e) {
-            log.error("Minecraft Libraries任务执行失败",e);
+            log.error("Libraries任务执行失败",e);
             subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);
             return InstallResult.failed();
         }
 
-        log.info("Minecraft Libraries任务执行成功");
+        log.info("Libraries任务执行成功");
         subTaskInfo.update(65535, "成功", SubTaskInfo.STATUS_SUCCESS);
 
         return InstallResult.success();

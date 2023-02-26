@@ -28,6 +28,7 @@ public class Utils {
     public static OkHttpClient getClient() {
         if (Objects.isNull(httpClient)) {
             httpClient = new OkHttpClient.Builder()
+//                    .proxy(new Proxy(Proxy.Type.SOCKS, new java.net.InetSocketAddress("127.0.0.1",7890)))
                     .build();
         }
         return httpClient;
@@ -191,22 +192,28 @@ public class Utils {
     }
 
     public static String mavenFileName(String name) {
-        String[] parts = name.split(":");
+        String[] suffixes = name.split("@");
+        String suffix = ".jar";
+        if (suffixes.length>1) {
+            suffix = "." + suffixes[1];
+        }
+        String[] parts = suffixes[0].split(":");
         if (parts.length == 3) {
-            return parts[1] + "-" + parts[2] + ".jar";
+            return parts[1] + "-" + parts[2] + suffix;
         } else if (parts.length == 4) {
-            return parts[1] + "-" + parts[2] + "-" + parts[3] + ".jar";
+            return parts[1] + "-" + parts[2] + "-" + parts[3] + suffix;
         } else {
             return name;
         }
     }
 
     public static String mavenPath(String name) {
-        String[] parts = name.split(":");
+        String[] parts = name.split("@")[0].split(":");
         if (parts.length >= 3) {
-            return String.join(File.separator, parts[0].split("\\.")) + File.separator +
-                    parts[1] + File.separator +
-                    parts[2];
+            return String.join(
+                    File.separator,
+                    parts[0].split("\\.")
+            ) + File.separator + parts[1] + File.separator + parts[2];
         } else {
             return name;
         }

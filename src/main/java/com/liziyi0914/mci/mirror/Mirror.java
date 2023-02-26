@@ -14,4 +14,6 @@ public abstract class Mirror {
     public abstract String minecraftLibrary(String url);
 
     public abstract String minecraftLog4j(String url);
+
+    public abstract String forge(String url);
 }

@@ -13,6 +13,9 @@ repositories {
         url 'https://maven.aliyun.com/repository/public/'
     }
     mavenCentral()
+    maven {
+        url 'https://www.jitpack.io'
+    }
 }
 
 ext {

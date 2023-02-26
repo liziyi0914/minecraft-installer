@@ -5,7 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="69680aa5-32b2-4440-a1e3-e2b2c62d3f0a" name="变更" comment="version 1.0">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/ForgeHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeInstallerTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeNewExtractTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeNewProcessTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeOldInstallTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeVersionManifestTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/SimpleTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Cmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Cmd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Identifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Identifiers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Identifiers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/MinecraftInstall.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/TaskExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/TaskExecutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/InstallContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/InstallContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/collector/WebSocketCollector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/collector/WebSocketCollector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/Handler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/Handler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/Handlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/Handlers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/MinecraftHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/MinecraftHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/BmclapiMirror.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/BmclapiMirror.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/Mirror.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/Mirror.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/OfficialMirror.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/OfficialMirror.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftJsonTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftJsonTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftLibrariesTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftLibrariesTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MultiTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MultiTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/Task.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,30 +69,6 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="minecraft-installer" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="application" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="minecraft-installer" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="minecraft-installer" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="distribution" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="minecraft-installer" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="other" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="minecraft-installer" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="shadow" type="c8890929:TasksNode$1" />
               </path>
             </expand>
@@ -85,6 +88,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="96f02b08-8289-4b28-8181-6bd3889f0417" />
+        <option name="url" value="git@github.com:liziyi0914/minecraft-installer.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -100,7 +116,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/Projects/minecraft-installer/src/main/resources",
+    "last_opened_file_path": "D:/Projects/minecraft-installer",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -115,6 +131,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Projects\minecraft-installer" />
       <recent name="D:\Projects\minecraft-installer\src\main\resources" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
@@ -125,10 +142,39 @@
       <recent name="com.liziyi0914.mci.mirror" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.minecraft-installer [run]">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Gradle.minecraft-installer [shadowJar]">
+    <configuration name="1.16.5-forge" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.liziyi0914.mci.Main" />
       <module name="minecraft-installer.main" />
+      <option name="PROGRAM_PARAMETERS" value="--root D:\.minecraft2 --id mc1.16.5-forge-36.2.39 --mc 1.16.5 --forge 36020039" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.liziyi0914.mci.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="1.16.5" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.liziyi0914.mci.Main" />
+      <module name="minecraft-installer.main" />
+      <option name="PROGRAM_PARAMETERS" value="--root D:\.minecraft2 --id 1.16.5 --mc 1.16.5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.liziyi0914.mci.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="1.7.10-forge" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.liziyi0914.mci.Main" />
+      <module name="minecraft-installer.main" />
+      <option name="PROGRAM_PARAMETERS" value="--root D:\.minecraft2 --id mc1.7.10-forge-10.13.4.1564 --mc 1.7.10 --forge 1564" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.liziyi0914.mci.*" />
@@ -223,12 +269,21 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Gradle.minecraft-installer [distZip]" />
+      <item itemvalue="Gradle.minecraft-installer [jar]" />
+      <item itemvalue="Gradle.minecraft-installer [run]" />
+      <item itemvalue="Gradle.minecraft-installer [shadowJar]" />
+      <item itemvalue="应用程序.1.16.5" />
+      <item itemvalue="应用程序.1.16.5-forge" />
+      <item itemvalue="应用程序.1.7.10-forge" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.minecraft-installer [run]" />
         <item itemvalue="Gradle.minecraft-installer [shadowJar]" />
+        <item itemvalue="Gradle.minecraft-installer [run]" />
         <item itemvalue="Gradle.minecraft-installer [jar]" />
-        <item itemvalue="应用程序.Main" />
+        <item itemvalue="应用程序.1.7.10-forge" />
         <item itemvalue="Gradle.minecraft-installer [distZip]" />
       </list>
     </recent_temporary>
@@ -252,7 +307,15 @@
       <workItem from="1673663337133" duration="3272000" />
       <workItem from="1673694176236" duration="654000" />
       <workItem from="1673851882238" duration="25587000" />
-      <workItem from="1674159560417" duration="7783000" />
+      <workItem from="1674159560417" duration="10122000" />
+      <workItem from="1674203378615" duration="158000" />
+      <workItem from="1674726813232" duration="2825000" />
+      <workItem from="1674786900394" duration="3195000" />
+      <workItem from="1674815741021" duration="872000" />
+      <workItem from="1674908951541" duration="1116000" />
+      <workItem from="1675371539925" duration="1065000" />
+      <workItem from="1677262155491" duration="23125000" />
+      <workItem from="1677356167505" duration="13620000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1673486480858</created>
@@ -268,16 +331,53 @@
       <option name="project" value="LOCAL" />
       <updated>1674167623464</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="version 1.0">
+      <created>1674168109867</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1674168109867</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="version 1.0" />
     <option name="LAST_COMMIT_MESSAGE" value="version 1.0" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.util.zip.ZipException" package="java.util.zip" />
+          <option name="timeStamp" value="8" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.util.LinkedHashMap$Entry" memberName="value" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

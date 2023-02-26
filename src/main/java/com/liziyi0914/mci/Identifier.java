@@ -1,5 +1,7 @@
 package com.liziyi0914.mci;
 
+import com.liziyi0914.mci.bean.InstallContext;
+
 import java.util.*;
 
 public class Identifier<T> {
@@ -19,6 +21,11 @@ public class Identifier<T> {
         return new Identifier<>((Class<List<S>>)l.getClass());
     }
 
+    public static <K,V> Identifier<Map<K,V>> map(Class<K> clzKey, Class<V> clzValue) {
+        Map<K,V> m = new HashMap<>();
+        return new Identifier<>((Class<Map<K,V>>)m.getClass());
+    }
+
     public Identifier(Class<T> clz) {
         this.n = rnd.nextLong();
         this.clz = clz;
@@ -30,6 +37,10 @@ public class Identifier<T> {
 
     public T cast(Object o) {
         return clz.cast(o);
+    }
+
+    public void putIntoContext(InstallContext ctx, Object value) {
+        ctx.put(this, (T)value);
     }
 
     @Override

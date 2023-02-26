@@ -4,4 +4,6 @@ public class Handlers {
 
     public static final Handler MINECRAFT = new MinecraftHandler();
 
+    public static final Handler FORGE = new ForgeHandler();
+
 }

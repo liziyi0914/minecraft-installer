@@ -1,5 +1,6 @@
 package com.liziyi0914.mci.task;
 
+import com.liziyi0914.mci.Identifiers;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
 import com.liziyi0914.mci.bean.SubTaskInfo;
@@ -24,14 +25,21 @@ public class MultiTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        boolean success = Flowable.fromIterable(tasks)
-                .flatMap(task -> Flowable.just(task)
-                        .observeOn(Schedulers.io())
-                        .map(t -> t.execute(ctx)),
-                        3
-                )
-                .all(InstallResult::isSuccess)
-                .blockingGet();
+        boolean multiThread = ctx.get(Identifiers.VAR_MULTI_THREAD);
+
+        boolean success;
+        if (multiThread) {
+            success = Flowable.fromIterable(tasks)
+                    .flatMap(task -> Flowable.just(task)
+                                    .observeOn(Schedulers.io())
+                                    .map(t -> t.execute(ctx)),
+                            3
+                    )
+                    .all(InstallResult::isSuccess)
+                    .blockingGet();
+        } else {
+            success = tasks.stream().allMatch(task -> task.execute(ctx).isSuccess());
+        }
 
         return success?InstallResult.success():InstallResult.failed();
     }
