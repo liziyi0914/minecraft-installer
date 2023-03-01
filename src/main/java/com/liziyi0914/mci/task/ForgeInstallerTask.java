@@ -24,6 +24,7 @@ public class ForgeInstallerTask implements Task {
     @Override
     public InstallResult execute(InstallContext ctx) {
         FileInfo forgeInstaller = ctx.get(Identifiers.VAR_FORGE_INSTALLER_FILE);
+        boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -35,6 +36,16 @@ public class ForgeInstallerTask implements Task {
         log.info("Forge Installer文件链接: {}", url);
 
         File file = forgeInstaller.getFile();
+
+        String hash = forgeInstaller.getHash();
+        if (Utils.checkHash(hash,file) && !override) {
+            log.info("[{}] 已存在", file.getName());
+
+            log.info("Forge Installer任务执行成功");
+            subTaskInfo.update(65535, "成功", SubTaskInfo.STATUS_SUCCESS);
+
+            return InstallResult.success();
+        }
 
         try {
             Optional<File> jsonOpt = Utils.downloadSync(url,file);

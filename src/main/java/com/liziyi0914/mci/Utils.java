@@ -2,6 +2,8 @@ package com.liziyi0914.mci;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -17,8 +19,10 @@ import okhttp3.ResponseBody;
 import java.io.*;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class Utils {
@@ -34,45 +38,45 @@ public class Utils {
         return httpClient;
     }
 
-    public static boolean checkHash(String hash,File file) {
+    public static boolean checkHash(String hash, File file) {
         if (Objects.isNull(hash) || !file.exists()) {
             return false;
         }
-        if (hash.length()==32) {
+        if (hash.length() == 32) {
             return hash.equalsIgnoreCase(DigestUtil.md5Hex(file));
-        } else if (hash.length()==40) {
+        } else if (hash.length() == 40) {
             return hash.equalsIgnoreCase(DigestUtil.sha1Hex(file));
-        } else if (hash.length()==64) {
+        } else if (hash.length() == 64) {
             return hash.equalsIgnoreCase(DigestUtil.sha256Hex(file));
         } else {
             return false;
         }
     }
 
-    public static boolean checkHashOrExists(String hash,File file) {
+    public static boolean checkHashOrExists(String hash, File file) {
         if (Objects.isNull(hash)) {
             return file.exists();
         }
-        if (hash.length()==32) {
+        if (hash.length() == 32) {
             return hash.equalsIgnoreCase(DigestUtil.md5Hex(file));
-        } else if (hash.length()==40) {
+        } else if (hash.length() == 40) {
             return hash.equalsIgnoreCase(DigestUtil.sha1Hex(file));
-        } else if (hash.length()==64) {
+        } else if (hash.length() == 64) {
             return hash.equalsIgnoreCase(DigestUtil.sha256Hex(file));
         } else {
             return false;
         }
     }
 
-    public static boolean checkBufferHash(String hash,byte[] buffer) {
+    public static boolean checkBufferHash(String hash, byte[] buffer) {
         if (Objects.isNull(hash)) {
             return true;
         }
-        if (hash.length()==32) {
+        if (hash.length() == 32) {
             return hash.equalsIgnoreCase(DigestUtil.md5Hex(buffer));
-        } else if (hash.length()==40) {
+        } else if (hash.length() == 40) {
             return hash.equalsIgnoreCase(DigestUtil.sha1Hex(buffer));
-        } else if (hash.length()==64) {
+        } else if (hash.length() == 64) {
             return hash.equalsIgnoreCase(DigestUtil.sha256Hex(buffer));
         } else {
             return false;
@@ -130,7 +134,7 @@ public class Utils {
 //        return Optional.of(file);
 
         try {
-            downloadSync(url, in->{
+            downloadSync(url, in -> {
                 OutputStream out = FileUtil.getOutputStream(file);
                 byte[] buffer = new byte[4 * 1024];
                 int len;
@@ -149,7 +153,7 @@ public class Utils {
     public static Optional<String> downloadSync(String url) {
         try {
             AtomicReference<String> s = new AtomicReference<>("");
-            downloadSync(url, in->{
+            downloadSync(url, in -> {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 byte[] buffer = new byte[4 * 1024];
                 int len;
@@ -184,7 +188,7 @@ public class Utils {
                 .timeout(120, TimeUnit.SECONDS, Schedulers.io(), new Observable<Optional<String>>() {
                     @Override
                     protected void subscribeActual(@NonNull Observer<? super Optional<String>> observer) {
-                        log.warn("下载超时 [{}]",url);
+                        log.warn("下载超时 [{}]", url);
                         observer.onNext(Optional.empty());
                     }
                 })
@@ -194,7 +198,7 @@ public class Utils {
     public static String mavenFileName(String name) {
         String[] suffixes = name.split("@");
         String suffix = ".jar";
-        if (suffixes.length>1) {
+        if (suffixes.length > 1) {
             suffix = "." + suffixes[1];
         }
         String[] parts = suffixes[0].split(":");
@@ -232,6 +236,51 @@ public class Utils {
             os = "UNKNOWN";
         }
         return os;
+    }
+
+    public static JSONObject mixJson(JSONObject baseJson, JSONObject newJson) {
+        Optional.ofNullable(newJson.getStr("minecraftArguments"))
+                .ifPresent(value ->
+                        baseJson.set(
+                                "minecraftArguments",
+                                value
+                        )
+                );
+        Optional.ofNullable(newJson.getStr("mainClass"))
+                .ifPresent(value -> baseJson.set("mainClass", value));
+        Optional.ofNullable(newJson.getJSONObject("arguments"))
+                .ifPresent(arguments -> {
+                    Optional.ofNullable(arguments.getJSONArray("jvm"))
+                            .ifPresent(jvm -> {
+                                JSONObject baseArgs = Optional.ofNullable(baseJson.getJSONObject("arguments")).orElse(new JSONObject());
+                                JSONArray jvmArray = Optional.ofNullable(baseArgs.getJSONArray("jvm")).orElse(new JSONArray());
+                                jvmArray.addAll(jvm);
+                                baseArgs.set("jvm", jvmArray);
+                            });
+                    Optional.ofNullable(arguments.getJSONArray("game"))
+                            .ifPresent(game -> {
+                                JSONObject baseArgs = Optional.ofNullable(baseJson.getJSONObject("arguments")).orElse(new JSONObject());
+                                JSONArray gameArray = Optional.ofNullable(baseArgs.getJSONArray("game")).orElse(new JSONArray());
+                                gameArray.addAll(game);
+                                baseArgs.set("game", gameArray);
+                            });
+                });
+        Optional.ofNullable(newJson.getJSONArray("libraries"))
+                .ifPresent(libraries -> {
+                    JSONArray baseLibraries = Optional.ofNullable(baseJson.getJSONArray("libraries")).orElse(new JSONArray());
+                    Set<String> names = baseLibraries.toList(JSONObject.class)
+                            .stream()
+                            .map(lib -> lib.getStr("name"))
+                            .collect(Collectors.toSet());
+                    libraries.toList(JSONObject.class)
+                            .forEach(lib->{
+                                if (!names.contains(lib.getStr("name"))) {
+                                    baseLibraries.add(lib);
+                                }
+                            });
+                    baseJson.set("libraries", baseLibraries);
+                });
+        return baseJson;
     }
 
     public interface DownloadCallback {

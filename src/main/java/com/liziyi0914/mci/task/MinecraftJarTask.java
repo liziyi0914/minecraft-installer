@@ -24,6 +24,7 @@ public class MinecraftJarTask implements Task {
     @Override
     public InstallResult execute(InstallContext ctx) {
         FileInfo jarFile = ctx.get(Identifiers.VAR_MINECRAFT_JAR_FILE);
+        boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
         String url = jarFile.getUrl();
         File file = jarFile.getFile();
 
@@ -33,6 +34,16 @@ public class MinecraftJarTask implements Task {
         log.info("开始执行Minecraft JAR任务");
 
         log.info("Minecraft JAR文件链接: {}", url);
+
+        String hash = jarFile.getHash();
+        if (Utils.checkHash(hash,file) && !override) {
+            log.info("[{}] 已存在", file.getName());
+
+            log.info("Minecraft JAR任务执行成功");
+            subTaskInfo.update(65535, "成功", SubTaskInfo.STATUS_SUCCESS);
+
+            return InstallResult.success();
+        }
 
         try {
             Optional<File> jsonOpt = Utils.downloadSync(url,file);

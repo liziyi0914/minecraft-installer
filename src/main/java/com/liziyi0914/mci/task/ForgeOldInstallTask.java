@@ -43,6 +43,7 @@ public class ForgeOldInstallTask implements Task {
         String version = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
         String id = ctx.get(Identifiers.VAR_ID);
         Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
+        boolean mix = ctx.get(Identifiers.VAR_MIX);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -60,16 +61,21 @@ public class ForgeOldInstallTask implements Task {
             log.info("开始释放install_profile.json");
             subTaskInfo.update(16384, "释放install_profile.json", SubTaskInfo.STATUS_RUNNING);
             JSONObject forgeJson = installProfile.getJSONObject("versionInfo");
-            forgeJson.set("id",id);
+            File jsonFile = FileUtil.file(
+                    minecraftRoot.toFile(),
+                    "versions",
+                    id,
+                    id + ".json"
+            );
+            if (mix) {
+                // 合并json
+                JSONObject baseJson = JSONUtil.parseObj(FileUtil.readUtf8String(jsonFile));
+                forgeJson = Utils.mixJson(baseJson, forgeJson);
+            } else {
+                forgeJson.set("id", id);
+            }
             IoUtil.writeUtf8(
-                    FileUtil.getOutputStream(
-                            FileUtil.file(
-                                    minecraftRoot.toFile(),
-                                    "versions",
-                                    id,
-                                    id+".json"
-                            )
-                    ),
+                    FileUtil.getOutputStream(jsonFile),
                     true,
                     forgeJson.toString()
             );
@@ -105,9 +111,9 @@ public class ForgeOldInstallTask implements Task {
                         String url = obj.getStr("url");
 
                         if (Optional.ofNullable(url).orElse("").contains("forge")) {
-                            url = mirror.forge("https://maven.minecraftforge.net/"+Utils.mavenPath(name)+"/"+Utils.mavenFileName(name));
+                            url = mirror.forge("https://maven.minecraftforge.net/" + Utils.mavenPath(name) + "/" + Utils.mavenFileName(name));
                         } else {
-                            url = mirror.minecraftLibrary("https://libraries.minecraft.net/"+Utils.mavenPath(name)+"/"+Utils.mavenFileName(name));
+                            url = mirror.minecraftLibrary("https://libraries.minecraft.net/" + Utils.mavenPath(name) + "/" + Utils.mavenFileName(name));
                         }
 
                         log.info("找到Library: {}，下载链接: {}", name, url);

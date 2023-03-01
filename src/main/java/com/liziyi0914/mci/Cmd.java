@@ -32,6 +32,9 @@ public class Cmd implements Callable<Integer> {
     @Option(names = {"--multi-thread"}, description = "多线程")
     boolean multiThread = true;
 
+    @Option(names = {"--mix"}, description = "合并版本")
+    boolean mix = false;
+
     @Option(names = {"--root"}, description = "Minecraft根目录", required = true)
     File root;
 
@@ -82,6 +85,8 @@ public class Cmd implements Callable<Integer> {
         ctx.put(Identifiers.VAR_TASK_ID, new Random().nextLong());
 
         ctx.put(Identifiers.VAR_MULTI_THREAD, isMultiThread());
+
+        ctx.put(Identifiers.VAR_MIX, isMix());
 
         TaskExecutor executor = new TaskExecutor();
 

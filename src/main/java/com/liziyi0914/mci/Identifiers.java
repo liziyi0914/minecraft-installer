@@ -18,6 +18,10 @@ public class Identifiers {
      */
     public static final Identifier<Boolean> VAR_MULTI_THREAD = Identifier.of(Boolean.class);
 
+    /** 合并版本
+     */
+    public static final Identifier<Boolean> VAR_MIX = Identifier.of(Boolean.class);
+
     /** 任务名称
      */
     public static final Identifier<String> VAR_TASK_NAME = Identifier.of(String.class);

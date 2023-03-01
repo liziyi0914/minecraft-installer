@@ -39,6 +39,7 @@ public class ForgeNewExtractTask implements Task {
         FileInfo mcJarFile = ctx.get(Identifiers.VAR_MINECRAFT_JAR_FILE);
         String id = ctx.get(Identifiers.VAR_ID);
         Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
+        boolean mix = ctx.get(Identifiers.VAR_MIX);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -67,15 +68,22 @@ public class ForgeNewExtractTask implements Task {
                 forgeJson = JSONUtil.parseObj(IoUtil.readUtf8(stream));
                 stream.close();
             }
-            forgeJson.set("id",id);
+            File jsonFile = FileUtil.file(
+                    minecraftRoot.toFile(),
+                    "versions",
+                    id,
+                    id + ".json"
+            );
+            if (mix) {
+                // 合并json
+                JSONObject baseJson = JSONUtil.parseObj(FileUtil.readUtf8String(jsonFile));
+                forgeJson = Utils.mixJson(baseJson, forgeJson);
+            } else {
+                forgeJson.set("id", id);
+            }
             IoUtil.writeUtf8(
                     FileUtil.getOutputStream(
-                            FileUtil.file(
-                                    minecraftRoot.toFile(),
-                                    "versions",
-                                    id,
-                                    id+".json"
-                            )
+                            jsonFile
                     ),
                     true,
                     forgeJson.toString()
@@ -91,7 +99,7 @@ public class ForgeNewExtractTask implements Task {
                         "libraries"
                 ).toPath();
                 String sourceDirectoryPath = "maven/";
-                try(ZipInputStream zis = new ZipInputStream(FileUtil.getInputStream(file))) {
+                try (ZipInputStream zis = new ZipInputStream(FileUtil.getInputStream(file))) {
                     ZipEntry entry = null;
                     while ((entry = zis.getNextEntry()) != null) {
                         // 如果entry不是指定目录下的项，则跳过
@@ -217,12 +225,12 @@ public class ForgeNewExtractTask implements Task {
             log.info("开始保存变量表");
             subTaskInfo.update(49152, "保存变量表", SubTaskInfo.STATUS_RUNNING);
             JSONObject dataObj = installProfile.getJSONObject("data");
-            dataObj.keySet().forEach(key->{
+            dataObj.keySet().forEach(key -> {
                 String rawValue = dataObj.getJSONObject(key).getStr("client");
 
                 String value = null;
                 if (rawValue.startsWith("[") && rawValue.endsWith("]")) {
-                    String tmp = rawValue.substring(1,rawValue.length() - 1);
+                    String tmp = rawValue.substring(1, rawValue.length() - 1);
                     try {
                         value = FileUtil.file(
                                 minecraftRoot.toFile(),
@@ -234,7 +242,7 @@ public class ForgeNewExtractTask implements Task {
                         throw new RuntimeException(e);
                     }
                 } else if (rawValue.startsWith("'") && rawValue.endsWith("'")) {
-                    value = rawValue.substring(1,rawValue.length() - 1);
+                    value = rawValue.substring(1, rawValue.length() - 1);
                 } else if (rawValue.equals("/data/client.lzma")) {
                     try {
                         value = lzmaFile.getCanonicalPath();

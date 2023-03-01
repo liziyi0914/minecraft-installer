@@ -22,13 +22,16 @@ public class ForgeHandler implements Handler {
     @Override
     public void genSubTasks(Cmd cmd, InstallContext ctx, TaskExecutor executor) {
         String version = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
+        boolean mix = ctx.get(Identifiers.VAR_MIX);
 
         executor
                 .thenShadow(
                         ctx,
                         Arrays.asList(Identifiers.VAR_ID),
                         context -> {
-                            context.put(Identifiers.VAR_ID, cmd.getMinecraft());
+                            if (!mix) {
+                                context.put(Identifiers.VAR_ID, cmd.getMinecraft());
+                            }
                         },
                         exec -> {
                             exec
