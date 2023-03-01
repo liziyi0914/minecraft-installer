@@ -4,16 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="69680aa5-32b2-4440-a1e3-e2b2c62d3f0a" name="变更" comment="version 1.1&#10;支持Forge安装">
+    <list default="true" id="69680aa5-32b2-4440-a1e3-e2b2c62d3f0a" name="变更" comment="v1.2&#10;支持Forge Mix安装">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/OptiFineHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/OptiFineInstallTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/OptiFineInstallerTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/VarTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Cmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Cmd.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Identifiers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Identifiers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/ForgeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/ForgeHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeInstallerTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeInstallerTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeNewExtractTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeNewExtractTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/Handlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/Handlers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeOldInstallTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeOldInstallTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftJarTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/MinecraftJarTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +86,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2JVG7beD2E2SnQcJjB8n24EKHYe" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -120,10 +124,11 @@
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.liziyi0914.mci.task" />
+      <recent name="com.liziyi0914.mci.handler" />
       <recent name="com.liziyi0914.mci.mirror" />
     </key>
   </component>
-  <component name="RunManager" selected="应用程序.1.16.5-forge-mix">
+  <component name="RunManager" selected="应用程序.1.16.5-forge">
     <configuration name="1.16.5-forge-mix" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.liziyi0914.mci.Main" />
       <module name="minecraft-installer.main" />
@@ -327,7 +332,7 @@
       <workItem from="1677262155491" duration="23125000" />
       <workItem from="1677356167505" duration="14195000" />
       <workItem from="1677417134799" duration="598000" />
-      <workItem from="1677684962297" duration="7923000" />
+      <workItem from="1677684962297" duration="16474000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1673486480858</created>
@@ -357,7 +362,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677370666743</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="v1.2&#10;支持Forge Mix安装">
+      <created>1677693894752</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1677693894752</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -378,7 +390,8 @@
     <MESSAGE value="init" />
     <MESSAGE value="version 1.0" />
     <MESSAGE value="version 1.1&#10;支持Forge安装" />
-    <option name="LAST_COMMIT_MESSAGE" value="version 1.1&#10;支持Forge安装" />
+    <MESSAGE value="v1.2&#10;支持Forge Mix安装" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.2&#10;支持Forge Mix安装" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">

@@ -8,7 +8,6 @@ import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.SubTaskInfo;
 import com.liziyi0914.mci.task.*;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class ForgeHandler implements Handler {
@@ -23,27 +22,20 @@ public class ForgeHandler implements Handler {
     public void genSubTasks(Cmd cmd, InstallContext ctx, TaskExecutor executor) {
         String version = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
         boolean mix = ctx.get(Identifiers.VAR_MIX);
+        String forgeId = ctx.get(Identifiers.VAR_ID);
+        String minecraftId = mix ? forgeId : cmd.getMinecraft();
 
         executor
-                .thenShadow(
-                        ctx,
-                        Arrays.asList(Identifiers.VAR_ID),
-                        context -> {
-                            if (!mix) {
-                                context.put(Identifiers.VAR_ID, cmd.getMinecraft());
-                            }
-                        },
-                        exec -> {
-                            exec
-                                    .then(new MinecraftVersionManifestTask(new SubTaskInfo("下载版本清单", 0xff)))
-                                    .then(new MinecraftJsonTask(new SubTaskInfo("下载Minecraft Json", 0xff)))
-                                    .then(new MinecraftAssetIndexTask(new SubTaskInfo("下载AssetIndex", 0xff)))
-                                    .thenMulti(
-                                            new MinecraftJarTask(new SubTaskInfo("下载Minecraft Jar", 0xff)),
-                                            new MinecraftAssetsTask(new SubTaskInfo("下载Assets", 0xff))
-                                    );
-                        }
-                )
+                .then(new VarTask<>(Identifiers.VAR_ID, minecraftId))
+                .then(new MinecraftVersionManifestTask(new SubTaskInfo("下载版本清单", 0xff)))
+                .then(new MinecraftJsonTask(new SubTaskInfo("下载Minecraft Json", 0xff)))
+                .then(new MinecraftAssetIndexTask(new SubTaskInfo("下载AssetIndex", 0xff)))
+                .thenMulti(
+                        new MinecraftJarTask(new SubTaskInfo("下载Minecraft Jar", 0xff)),
+                        new MinecraftAssetsTask(new SubTaskInfo("下载Assets", 0xff))
+                );
+
+        executor.then(new VarTask<>(Identifiers.VAR_ID, forgeId))
                 .then(new ForgeVersionManifestTask(new SubTaskInfo("下载Forge清单", 0xff)))
                 .then(new ForgeInstallerTask(new SubTaskInfo("下载ForgeInstaller", 0xff)));
 

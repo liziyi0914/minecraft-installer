@@ -104,4 +104,18 @@ public class Identifiers {
      */
     public static final Identifier<JSONArray> VAR_FORGE_PROCESSORS = Identifier.of(JSONArray.class);
 
+
+
+    /** OptiFine Type
+     */
+    public static final Identifier<String> VAR_OPTIFINE_TYPE = Identifier.of(String.class);
+
+    /** OptiFine Patch
+     */
+    public static final Identifier<String> VAR_OPTIFINE_PATCH = Identifier.of(String.class);
+
+    /** OptiFine installer file
+     */
+    public static final Identifier<FileInfo> VAR_OPTIFINE_INSTALLER_FILE = Identifier.of(FileInfo.class);
+
 }

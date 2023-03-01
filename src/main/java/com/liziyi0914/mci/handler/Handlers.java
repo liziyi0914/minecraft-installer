@@ -6,4 +6,6 @@ public class Handlers {
 
     public static final Handler FORGE = new ForgeHandler();
 
+    public static final Handler OPTIFINE = new OptiFineHandler();
+
 }

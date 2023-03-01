@@ -47,6 +47,9 @@ public class Cmd implements Callable<Integer> {
     @Option(names = {"--forge"}, description = "Forge build", required = false)
     String forge;
 
+    @Option(names = {"--optfine"}, description = "OptiFine版本（type:patch，如：\"E4:HD_U\"）", required = false)
+    String optfine;
+
     @Option(names = {"--ws-url"}, description = "WebSocket地址")
     String ws;
 
@@ -96,7 +99,9 @@ public class Cmd implements Callable<Integer> {
             executor.collector(webSocketCollector);
         }
 
-        if (Handlers.FORGE.canHandle(this)) {
+        if (Handlers.OPTIFINE.canHandle(this)) {
+            Handlers.OPTIFINE.handle(this, ctx, executor);
+        } else if (Handlers.FORGE.canHandle(this)) {
             Handlers.FORGE.handle(this, ctx, executor);
         } else if (Handlers.MINECRAFT.canHandle(this)) {
             Handlers.MINECRAFT.handle(this, ctx, executor);

@@ -32,9 +32,6 @@ public class ForgeOldInstallTask implements Task {
 
     SubTaskInfo info;
 
-    void installOld(InstallContext ctx) throws RuntimeException {
-    }
-
     @Override
     public InstallResult execute(InstallContext ctx) {
         Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
