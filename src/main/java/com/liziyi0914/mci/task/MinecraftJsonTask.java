@@ -1,9 +1,6 @@
 package com.liziyi0914.mci.task;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.liziyi0914.mci.Identifiers;
 import com.liziyi0914.mci.Utils;
@@ -11,6 +8,9 @@ import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
 import com.liziyi0914.mci.bean.SubTaskInfo;
+import com.liziyi0914.mci.bean.minecraft.Download;
+import com.liziyi0914.mci.bean.minecraft.Library;
+import com.liziyi0914.mci.bean.minecraft.Version;
 import com.liziyi0914.mci.mirror.Mirror;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -61,77 +58,73 @@ public class MinecraftJsonTask implements Task {
             log.info("开始解析Minecraft JSON文件");
 
             String jsonString = jsonOpt.get();
-            JSONObject json = JSONUtil.parseObj(jsonString);
-            json.set("id", id);
 
             if (!Utils.checkBufferHash(jsonFile.getHash(),jsonString.getBytes(StandardCharsets.UTF_8))) {
                 throw new IOException("文件校验失败");
             }
 
-            IoUtil.writeUtf8(
-                    FileUtil.getOutputStream(file),
-                    true,
-                    json.toString()
-            );
+            Version json = JSONUtil.toBean(jsonString, Version.class);
+            json.setId(id);
+            ctx.put(Identifiers.VAR_MINECRAFT_JSON, json);
 
             log.info("Minecraft JSON文件写入完成");
 
             subTaskInfo.update(32767, "解析中", SubTaskInfo.STATUS_RUNNING);
 
             {
-                JSONObject obj = json.getJSONObject("downloads").getJSONObject("client");
+                Download obj = json.getDownloads().get("client");
                 ctx.put(
                         Identifiers.VAR_MINECRAFT_JAR_FILE,
                         FileInfo.builder()
-                                .url(mirror.minecraftJar(obj.getStr("url")))
-                                .hash(obj.getStr("sha1"))
+                                .url(mirror.minecraftJar(obj.getUrl()))
+                                .hash(obj.getSha1())
                                 .file(FileUtil.file(minecraftRoot.toFile(), "versions", id, id + ".jar"))
                                 .build()
                 );
 
-                log.info("Minecraft JAR文件链接: {}", obj.getStr("url"));
+                log.info("Minecraft JAR文件链接: {}", obj.getUrl());
             }
 
             subTaskInfo.update(40960, "解析中", SubTaskInfo.STATUS_RUNNING);
 
             {
-                JSONObject obj = json.getJSONObject("assetIndex");
+                Version._AssetIndex obj = json.getAssetIndex();
                 ctx.put(
                         Identifiers.VAR_MINECRAFT_ASSET_INDEX_FILE,
                         FileInfo.builder()
-                                .name(obj.getStr("id") + ".json")
-                                .url(mirror.minecraftAssetIndex(obj.getStr("url")))
-                                .hash(obj.getStr("sha1"))
-                                .file(FileUtil.file(minecraftRoot.toFile(), "assets", "indexes", obj.getStr("id") + ".json"))
+                                .name(obj.getId() + ".json")
+                                .url(mirror.minecraftAssetIndex(obj.getUrl()))
+                                .hash(obj.getSha1())
+                                .file(FileUtil.file(minecraftRoot.toFile(), "assets", "indexes", obj.getId() + ".json"))
                                 .build()
                 );
 
-                log.info("Minecraft AssetIndex文件链接: {}", obj.getStr("url"));
+                log.info("Minecraft AssetIndex文件链接: {}", obj.getUrl());
             }
 
             subTaskInfo.update(49151, "解析中", SubTaskInfo.STATUS_RUNNING);
 
             {
-                JSONArray libs = json.getJSONArray("libraries");
-                List<FileInfo> list = libs.toList(JSONObject.class).stream()
+                List<Library> libs = json.getLibraries();
+                List<FileInfo> list = libs.stream()
                         .flatMap(o -> {
-                            JSONObject downloads = o.getJSONObject("downloads");
-                            JSONObject classifiers = downloads.getJSONObject("classifiers");
-                            JSONObject artifact = downloads.getJSONObject("artifact");
+                            Library._Download downloads = o.getDownloads();
+                            Map<String, Download> classifiers = downloads.getClassifiers();
+                            Download artifact = downloads.getArtifact();
 
                             List<FileInfo> files = new ArrayList<>();
                             if (Objects.nonNull(artifact)) {
                                 files.add(
                                         FileInfo.builder()
-                                                .id(o.getStr("name"))
-                                                .name(Utils.mavenFileName(o.getStr("name")))
-                                                .url(mirror.minecraftLibrary(artifact.getStr("url")))
-                                                .hash(artifact.getStr("sha1"))
+                                                .id(o.getName())
+                                                .name(Utils.mavenFileName(o.getName()))
+                                                .url(mirror.minecraftLibrary(artifact.getUrl()))
+                                                .hash(artifact.getSha1())
                                                 .file(FileUtil.file(
                                                         minecraftRoot.toFile(),
                                                         "libraries",
-                                                        Utils.mavenPath(o.getStr("name")),
-                                                        Utils.mavenFileName(o.getStr("name"))
+                                                        Utils.mavenPath(o.getName()),
+                                                        Utils.mavenFileName(o.getName())
                                                 ))
                                                 .build()
                                 );
@@ -139,22 +132,22 @@ public class MinecraftJsonTask implements Task {
 
                             if (Objects.nonNull(classifiers)) {
                                 String os = Utils.getOs();
-                                Optional.ofNullable(o.getJSONObject("natives"))
-                                        .map(obj->obj.getStr(os))
+                                Optional.ofNullable(o.getNatives())
+                                        .map(obj->obj.get(os))
                                         .ifPresent(os2 -> {
-                                            JSONObject osObj = classifiers.getJSONObject(os2);
+                                            Download osObj = classifiers.get(os2);
                                             if (!Objects.isNull(osObj)) {
                                                 files.add(
                                                         FileInfo.builder()
-                                                                .id(o.getStr("name"))
-                                                                .name(Utils.mavenFileName(o.getStr("name")+":"+os2))
-                                                                .url(mirror.minecraftLibrary(osObj.getStr("url")))
-                                                                .hash(osObj.getStr("sha1"))
+                                                                .id(o.getName())
+                                                                .name(Utils.mavenFileName(o.getName()+":"+os2))
+                                                                .url(mirror.minecraftLibrary(osObj.getUrl()))
+                                                                .hash(osObj.getSha1())
                                                                 .file(FileUtil.file(
                                                                         minecraftRoot.toFile(),
                                                                         "libraries",
-                                                                        Utils.mavenPath(o.getStr("name")),
-                                                                        Utils.mavenFileName(o.getStr("name")+":"+os2)
+                                                                        Utils.mavenPath(o.getName()),
+                                                                        Utils.mavenFileName(o.getName()+":"+os2)
                                                                 ))
                                                                 .build()
                                                 );
@@ -173,7 +166,7 @@ public class MinecraftJsonTask implements Task {
             subTaskInfo.update(57343, "解析中", SubTaskInfo.STATUS_RUNNING);
 
             {
-                Optional.ofNullable(json.getJSONObject("logging"))
+                Optional.ofNullable(json.getLogging())
                         .map(obj -> obj.getJSONObject("client"))
                         .map(obj -> obj.getJSONObject("file"))
                         .ifPresent(obj -> {

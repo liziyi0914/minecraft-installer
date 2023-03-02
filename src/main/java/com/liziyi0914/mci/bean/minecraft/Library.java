@@ -2,27 +2,29 @@ package com.liziyi0914.mci.bean.minecraft;
 
 import cn.hutool.json.JSONObject;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Library {
 
     String name;
     String url;
-    HashMap<String,String> natives;
-    ArrayList<Rule> rules;
+    Map<String,String> natives;
+    List<Rule> rules;
     _Download downloads;
 
     JSONObject extract;
 
-    boolean serverreq;
-    boolean clientreq;
+    Boolean serverreq;
+    Boolean clientreq;
 
     @Data
     @AllArgsConstructor
@@ -30,7 +32,7 @@ public class Library {
     public static class _Download {
 
         Download artifact;
-        HashMap<String,Download> classifiers;
+        Map<String,Download> classifiers;
 
     }
 

@@ -6,6 +6,8 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
+import com.liziyi0914.mci.bean.minecraft.Library;
+import com.liziyi0914.mci.bean.minecraft.Version;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -17,9 +19,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import java.io.*;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -273,12 +273,89 @@ public class Utils {
                             .map(lib -> lib.getStr("name"))
                             .collect(Collectors.toSet());
                     libraries.toList(JSONObject.class)
-                            .forEach(lib->{
+                            .forEach(lib -> {
                                 if (!names.contains(lib.getStr("name"))) {
                                     baseLibraries.add(lib);
                                 }
                             });
                     baseJson.set("libraries", baseLibraries);
+                });
+        return baseJson;
+    }
+
+    public static Version mixJson(Version baseJson, Version newJson) {
+        Optional.ofNullable(newJson.getMinecraftArguments())
+                .ifPresent(baseJson::setMinecraftArguments);
+        Optional.ofNullable(newJson.getMainClass())
+                .ifPresent(baseJson::setMainClass);
+        Optional.ofNullable(newJson.getArguments())
+                .ifPresent(arguments -> {
+                    Optional.ofNullable(arguments.get("jvm"))
+                            .ifPresent(jvm -> {
+//                                JSONObject baseArgs = Optional.ofNullable(baseJson.getJSONObject("arguments")).orElse(new JSONObject());
+//                                JSONArray jvmArray = Optional.ofNullable(baseArgs.getJSONArray("jvm")).orElse(new JSONArray());
+//                                jvmArray.addAll(jvm);
+//                                baseArgs.set("jvm", jvmArray);
+                                Map<String, List<Object>> baseArguments = baseJson.getArguments();
+                                if (Objects.isNull(baseArguments)) {
+                                    baseArguments = new HashMap<>();
+                                    baseJson.setArguments(baseArguments);
+                                }
+                                List<Object> jvmList = baseArguments.get("jvm");
+                                if (Objects.isNull(jvmList)) {
+                                    jvmList = new ArrayList<>();
+                                    baseArguments.put("jvm", jvmList);
+                                }
+                                jvmList.addAll(jvm);
+                            });
+                    Optional.ofNullable(arguments.get("game"))
+                            .ifPresent(game -> {
+//                                JSONObject baseArgs = Optional.ofNullable(baseJson.getJSONObject("arguments")).orElse(new JSONObject());
+//                                JSONArray gameArray = Optional.ofNullable(baseArgs.getJSONArray("game")).orElse(new JSONArray());
+//                                gameArray.addAll(game);
+//                                baseArgs.set("game", gameArray);
+                                Map<String, List<Object>> baseArguments = baseJson.getArguments();
+                                if (Objects.isNull(baseArguments)) {
+                                    baseArguments = new HashMap<>();
+                                    baseJson.setArguments(baseArguments);
+                                }
+                                List<Object> jvmList = baseArguments.get("game");
+                                if (Objects.isNull(jvmList)) {
+                                    jvmList = new ArrayList<>();
+                                    baseArguments.put("game", jvmList);
+                                }
+                                jvmList.addAll(game);
+                            });
+                });
+        Optional.ofNullable(newJson.getLibraries())
+                .ifPresent(libraries -> {
+                    List<Library> libs;
+                    if (Objects.isNull(baseJson.getLibraries())) {
+                        libs = new ArrayList<>();
+                        baseJson.setLibraries(libs);
+                    } else {
+                        libs = baseJson.getLibraries();
+                    }
+                    Set<String> names = libs.stream()
+                            .map(Library::getName)
+                            .collect(Collectors.toSet());
+                    libraries.forEach(lib -> {
+                        if (!names.contains(lib.getName())) {
+                            libs.add(lib);
+                        }
+                    });
+//                    JSONArray baseLibraries = Optional.ofNullable(baseJson.getJSONArray("libraries")).orElse(new JSONArray());
+//                    Set<String> names = baseLibraries.toList(JSONObject.class)
+//                            .stream()
+//                            .map(lib -> lib.getStr("name"))
+//                            .collect(Collectors.toSet());
+//                    libraries.toList(JSONObject.class)
+//                            .forEach(lib->{
+//                                if (!names.contains(lib.getStr("name"))) {
+//                                    baseLibraries.add(lib);
+//                                }
+//                            });
+//                    baseJson.set("libraries", baseLibraries);
                 });
         return baseJson;
     }

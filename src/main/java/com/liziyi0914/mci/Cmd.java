@@ -47,8 +47,8 @@ public class Cmd implements Callable<Integer> {
     @Option(names = {"--forge"}, description = "Forge build", required = false)
     String forge;
 
-    @Option(names = {"--optfine"}, description = "OptiFine版本（type:patch，如：\"E4:HD_U\"）", required = false)
-    String optfine;
+    @Option(names = {"--optifine"}, description = "OptiFine版本（type:patch，如：\"HD_U:E4\"）", required = false)
+    String optifine;
 
     @Option(names = {"--ws-url"}, description = "WebSocket地址")
     String ws;

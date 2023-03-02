@@ -33,7 +33,8 @@ public class ForgeHandler implements Handler {
                 .thenMulti(
                         new MinecraftJarTask(new SubTaskInfo("下载Minecraft Jar", 0xff)),
                         new MinecraftAssetsTask(new SubTaskInfo("下载Assets", 0xff))
-                );
+                )
+                .then(new DumpVersionJsonTask(new SubTaskInfo("写入版本Json", 0xff)));
 
         executor.then(new VarTask<>(Identifiers.VAR_ID, forgeId))
                 .then(new ForgeVersionManifestTask(new SubTaskInfo("下载Forge清单", 0xff)))
@@ -44,6 +45,7 @@ public class ForgeHandler implements Handler {
             executor
                     // 解包
                     .then(new ForgeNewExtractTask(new SubTaskInfo("安装Forge", 0xff)))
+                    .then(new DumpVersionJsonTask(new SubTaskInfo("写入版本Json", 0xff)))
                     // 补全libraries
                     .then(new MinecraftLibrariesTask(new SubTaskInfo("下载Libraries", 0xff)))
                     // 执行模块
@@ -53,6 +55,7 @@ public class ForgeHandler implements Handler {
             // 旧版安装
             executor
                     .then(new ForgeOldInstallTask(new SubTaskInfo("安装Forge", 0xff)))
+                    .then(new DumpVersionJsonTask(new SubTaskInfo("写入版本Json", 0xff)))
                     .then(new MinecraftLibrariesTask(new SubTaskInfo("下载Libraries", 0xff)))
                     .then(new RetryTask(new SubTaskInfo("重试下载文件", 0xff)));
         }

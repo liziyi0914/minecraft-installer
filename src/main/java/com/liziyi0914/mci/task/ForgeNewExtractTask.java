@@ -10,6 +10,9 @@ import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
 import com.liziyi0914.mci.bean.SubTaskInfo;
+import com.liziyi0914.mci.bean.minecraft.Download;
+import com.liziyi0914.mci.bean.minecraft.Library;
+import com.liziyi0914.mci.bean.minecraft.Version;
 import com.liziyi0914.mci.mirror.Mirror;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +22,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -60,12 +64,12 @@ public class ForgeNewExtractTask implements Task {
             // 释放json
             log.info("开始释放version.json");
             subTaskInfo.update(8192, "释放version.json", SubTaskInfo.STATUS_RUNNING);
-            JSONObject forgeJson;
+            Version forgeJson;
             {
                 InputStream stream = zipFile.getInputStream(zipFile.getEntry("version.json"));
                 if (stream == null)
                     throw new RuntimeException("找不到version.json");
-                forgeJson = JSONUtil.parseObj(IoUtil.readUtf8(stream));
+                forgeJson = JSONUtil.toBean(IoUtil.readUtf8(stream), Version.class);
                 stream.close();
             }
             File jsonFile = FileUtil.file(
@@ -76,17 +80,18 @@ public class ForgeNewExtractTask implements Task {
             );
             if (mix) {
                 // 合并json
-                JSONObject baseJson = JSONUtil.parseObj(FileUtil.readUtf8String(jsonFile));
+//                JSONObject baseJson = JSONUtil.parseObj(FileUtil.readUtf8String(jsonFile));
+//                forgeJson = Utils.mixJson(baseJson, forgeJson);
+                Version baseJson = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
                 forgeJson = Utils.mixJson(baseJson, forgeJson);
             } else {
-                forgeJson.set("id", id);
+                forgeJson.setId(id);
             }
-            IoUtil.writeUtf8(
-                    FileUtil.getOutputStream(
-                            jsonFile
-                    ),
-                    true,
-                    forgeJson.toString()
+            ctx.put(Identifiers.VAR_MINECRAFT_JSON, forgeJson);
+            ctx.put(Identifiers.VAR_MINECRAFT_JSON_FILE, FileInfo
+                    .builder()
+                    .file(jsonFile)
+                    .build()
             );
             log.info("version.json释放完成");
 
@@ -145,15 +150,25 @@ public class ForgeNewExtractTask implements Task {
             log.info("开始添加libraries");
             subTaskInfo.update(32768, "添加libraries", SubTaskInfo.STATUS_RUNNING);
             {
-                List<FileInfo> libs = forgeJson.getJSONArray("libraries")
-                        .toList(JSONObject.class)
+                List<FileInfo> libs = forgeJson.getLibraries()
                         .stream()
 //                    .filter(obj -> !maven.equals(obj.getStr("name")))
                         .map(obj -> {
-                            String name = obj.getStr("name");
-                            JSONObject artifact = obj.getJSONObject("downloads").getJSONObject("artifact");
-                            String url = artifact.getStr("url");
-                            String hash = artifact.getStr("sha1");
+                            String name = obj.getName();
+                            Download artifact = Optional.ofNullable(obj.getDownloads()).map(Library._Download::getArtifact).orElse(null);
+                            if (
+                                    Objects.isNull(artifact) &&
+                                            FileUtil.exist(FileUtil.file(
+                                                            minecraftRoot.toFile(),
+                                                            "libraries",
+                                                            Utils.mavenPath(name),
+                                                            Utils.mavenFileName(name)
+                                                    )
+                                            )) {
+                                return null;
+                            }
+                            String url = Optional.ofNullable(artifact).map(Download::getUrl).orElse(null);
+                            String hash = Optional.ofNullable(artifact).map(Download::getSha1).orElse(null);
 
                             if (Optional.ofNullable(url).orElse("").contains("forge")) {
                                 url = mirror.forge("https://maven.minecraftforge.net/" + Utils.mavenPath(name) + "/" + Utils.mavenFileName(name));
@@ -176,6 +191,7 @@ public class ForgeNewExtractTask implements Task {
                                     .hash(Optional.ofNullable(hash).filter(s -> !s.isEmpty()).orElse(null))
                                     .build();
                         })
+                        .filter(Objects::nonNull)
                         .collect(Collectors.toList());
                 ctx.addAll(Identifiers.VAR_LIBRARY_FILES, libs);
             }

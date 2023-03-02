@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class Rule {
 
     String action;
-    HashMap<String,String> os;
+    Map<String,String> os;
     /*
     name
     version

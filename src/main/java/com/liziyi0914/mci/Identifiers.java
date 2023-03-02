@@ -2,6 +2,7 @@ package com.liziyi0914.mci;
 
 import cn.hutool.json.JSONArray;
 import com.liziyi0914.mci.bean.FileInfo;
+import com.liziyi0914.mci.bean.minecraft.Version;
 import com.liziyi0914.mci.mirror.Mirror;
 
 import java.nio.file.Path;
@@ -49,6 +50,10 @@ public class Identifiers {
     /** Minecraft版本json file
      */
     public static final Identifier<FileInfo> VAR_MINECRAFT_JSON_FILE = Identifier.of(FileInfo.class);
+
+    /** Minecraft版本json data
+     */
+    public static final Identifier<Version> VAR_MINECRAFT_JSON = Identifier.of(Version.class);
 
     /** Minecraft版本jar file
      */

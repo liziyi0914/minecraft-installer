@@ -19,6 +19,7 @@ public class MinecraftHandler implements Handler {
         executor
                 .then(new MinecraftVersionManifestTask(new SubTaskInfo("下载版本清单", 0xff)))
                 .then(new MinecraftJsonTask(new SubTaskInfo("下载Minecraft Json", 0xff)))
+                .then(new DumpVersionJsonTask(new SubTaskInfo("写入版本Json", 0xff)))
                 .then(new MinecraftAssetIndexTask(new SubTaskInfo("下载AssetIndex", 0xff)))
                 .thenMulti(
                         new MinecraftJarTask(new SubTaskInfo("下载Minecraft Jar", 0xff)),

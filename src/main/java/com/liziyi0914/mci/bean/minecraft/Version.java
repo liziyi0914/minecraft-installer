@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -25,16 +25,16 @@ public class Version {
     String jar;
     String inheritsFrom;
 
-    HashMap<String, ArrayList<Object>> arguments;
+    Map<String, List<Object>> arguments;
     _AssetIndex assetIndex;
 
     JSONObject logging;
 
-    HashMap<String,Download> downloads;
+    Map<String,Download> downloads;
 
-    HashMap<String,Object> javaVersion;
+    Map<String,Object> javaVersion;
 
-    ArrayList<Library> libraries;
+    List<Library> libraries;
 
     @Data
     @AllArgsConstructor
