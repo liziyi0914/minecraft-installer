@@ -44,6 +44,11 @@ public class InstallContext {
         }
     }
 
+    public <T,S extends Collection<T>> void clearList(Identifier<S> key) {
+        Optional<S> opt = getOpt(key);
+        opt.ifPresent(Collection::clear);
+    }
+
     public <T> T get(Identifier<T> key) {
         return Optional.ofNullable(map.get(key)).map(key::cast).orElse(null);
     }

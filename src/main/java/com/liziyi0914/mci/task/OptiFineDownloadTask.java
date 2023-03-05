@@ -18,7 +18,7 @@ import java.util.Optional;
 @Data
 @Slf4j
 @AllArgsConstructor
-public class OptiFineInstallerTask implements Task {
+public class OptiFineDownloadTask implements Task {
 
     SubTaskInfo info;
 
@@ -33,7 +33,7 @@ public class OptiFineInstallerTask implements Task {
 
         String url = "https://bmclapi2.bangbang93.com/optifine/"+minecraftVersion+"/"+optifineType+"/"+optifinePatch;
 
-        log.info("开始执行OptiFine Installer任务");
+        log.info("开始执行OptiFine下载任务");
 
         log.info("OptiFine Installer文件链接: {}", url);
 
@@ -54,12 +54,12 @@ public class OptiFineInstallerTask implements Task {
 
             log.info("OptiFine Installer文件写入完成");
         } catch (IOException e) {
-            log.error("OptiFine Installer任务执行失败",e);
+            log.error("OptiFine下载任务执行失败",e);
             subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);
             return InstallResult.failed();
         }
 
-        log.info("OptiFine Installer任务执行成功");
+        log.info("OptiFine下载任务执行成功");
         subTaskInfo.update(65535, "成功", SubTaskInfo.STATUS_SUCCESS);
 
         return InstallResult.success();

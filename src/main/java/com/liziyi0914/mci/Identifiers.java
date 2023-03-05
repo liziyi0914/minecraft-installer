@@ -123,4 +123,10 @@ public class Identifiers {
      */
     public static final Identifier<FileInfo> VAR_OPTIFINE_INSTALLER_FILE = Identifier.of(FileInfo.class);
 
+
+
+    /** LityLoader Version
+     */
+    public static final Identifier<String> VAR_LITE_LOADER_VERSION = Identifier.of(String.class);
+
 }

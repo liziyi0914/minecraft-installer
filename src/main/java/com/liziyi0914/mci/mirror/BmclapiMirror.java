@@ -47,4 +47,10 @@ public class BmclapiMirror extends OfficialMirror {
                 .replace("https://maven.minecraftforge.net","https://"+domain()+"/maven")
                 .replace("https://files.minecraftforge.net/maven","https://"+domain()+"/maven");
     }
+
+    @Override
+    public String liteLoader(String url) {
+        return url.replace("http://dl.liteloader.com/versions/versions.json","https://"+domain()+"/maven/com/mumfrey/liteloader/versions.json")
+                .replace("http://dl.liteloader.com/versions/com/mumfrey/liteloader/","https://"+domain()+"/maven/com/mumfrey/liteloader/");
+    }
 }

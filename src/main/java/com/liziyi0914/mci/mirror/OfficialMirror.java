@@ -42,4 +42,9 @@ public class OfficialMirror extends Mirror {
         return url;
     }
 
+    @Override
+    public String liteLoader(String url) {
+        return url;
+    }
+
 }

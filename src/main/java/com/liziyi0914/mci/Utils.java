@@ -22,12 +22,16 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class Utils {
 
     private static OkHttpClient httpClient = null;
+
+    private static final Pattern tweakPattern = Pattern.compile("--tweakClass ((\\w+\\.?)*\\w+)");
 
     public static OkHttpClient getClient() {
         if (Objects.isNull(httpClient)) {
@@ -285,17 +289,21 @@ public class Utils {
 
     public static Version mixJson(Version baseJson, Version newJson) {
         Optional.ofNullable(newJson.getMinecraftArguments())
-                .ifPresent(baseJson::setMinecraftArguments);
+                .ifPresent(newArgs -> {
+                    String oldArgs = baseJson.getMinecraftArguments();
+                    Matcher m = tweakPattern.matcher(oldArgs);
+                    StringBuilder args = new StringBuilder(newArgs);
+                    while (m.find()) {
+                        args.append(" --tweakClass ").append(m.group(1));
+                    }
+                    baseJson.setMinecraftArguments(args.toString().trim());
+                });
         Optional.ofNullable(newJson.getMainClass())
                 .ifPresent(baseJson::setMainClass);
         Optional.ofNullable(newJson.getArguments())
                 .ifPresent(arguments -> {
                     Optional.ofNullable(arguments.get("jvm"))
                             .ifPresent(jvm -> {
-//                                JSONObject baseArgs = Optional.ofNullable(baseJson.getJSONObject("arguments")).orElse(new JSONObject());
-//                                JSONArray jvmArray = Optional.ofNullable(baseArgs.getJSONArray("jvm")).orElse(new JSONArray());
-//                                jvmArray.addAll(jvm);
-//                                baseArgs.set("jvm", jvmArray);
                                 Map<String, List<Object>> baseArguments = baseJson.getArguments();
                                 if (Objects.isNull(baseArguments)) {
                                     baseArguments = new HashMap<>();
@@ -310,10 +318,6 @@ public class Utils {
                             });
                     Optional.ofNullable(arguments.get("game"))
                             .ifPresent(game -> {
-//                                JSONObject baseArgs = Optional.ofNullable(baseJson.getJSONObject("arguments")).orElse(new JSONObject());
-//                                JSONArray gameArray = Optional.ofNullable(baseArgs.getJSONArray("game")).orElse(new JSONArray());
-//                                gameArray.addAll(game);
-//                                baseArgs.set("game", gameArray);
                                 Map<String, List<Object>> baseArguments = baseJson.getArguments();
                                 if (Objects.isNull(baseArguments)) {
                                     baseArguments = new HashMap<>();

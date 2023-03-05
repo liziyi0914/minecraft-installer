@@ -10,6 +10,7 @@ import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
 import com.liziyi0914.mci.bean.SubTaskInfo;
+import com.liziyi0914.mci.bean.minecraft.Version;
 import com.liziyi0914.mci.mirror.Mirror;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,7 +38,7 @@ public class ForgeOldInstallTask implements Task {
         Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
         FileInfo forgeInstaller = ctx.get(Identifiers.VAR_FORGE_INSTALLER_FILE);
         String forgeVersion = ctx.get(Identifiers.VAR_FORGE_VERSION);
-        String version = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
+        Version version = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
         String id = ctx.get(Identifiers.VAR_ID);
         Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
         boolean mix = ctx.get(Identifiers.VAR_MIX);
@@ -57,25 +58,9 @@ public class ForgeOldInstallTask implements Task {
             // 释放json
             log.info("开始释放install_profile.json");
             subTaskInfo.update(16384, "释放install_profile.json", SubTaskInfo.STATUS_RUNNING);
-            JSONObject forgeJson = installProfile.getJSONObject("versionInfo");
-            File jsonFile = FileUtil.file(
-                    minecraftRoot.toFile(),
-                    "versions",
-                    id,
-                    id + ".json"
-            );
-            if (mix) {
-                // 合并json
-                JSONObject baseJson = JSONUtil.parseObj(FileUtil.readUtf8String(jsonFile));
-                forgeJson = Utils.mixJson(baseJson, forgeJson);
-            } else {
-                forgeJson.set("id", id);
-            }
-            IoUtil.writeUtf8(
-                    FileUtil.getOutputStream(jsonFile),
-                    true,
-                    forgeJson.toString()
-            );
+            Version forgeJson = installProfile.getJSONObject("versionInfo").toBean(Version.class);
+            version = Utils.mixJson(version, forgeJson);
+            ctx.put(Identifiers.VAR_MINECRAFT_JSON, version);
             log.info("install_profile.json释放完成");
 
             // 释放jar
@@ -99,13 +84,12 @@ public class ForgeOldInstallTask implements Task {
             // 添加libraries
             log.info("开始添加libraries");
             subTaskInfo.update(49152, "添加libraries", SubTaskInfo.STATUS_RUNNING);
-            List<FileInfo> libs = forgeJson.getJSONArray("libraries")
-                    .toList(JSONObject.class)
+            List<FileInfo> libs = forgeJson.getLibraries()
                     .stream()
-                    .filter(obj -> !maven.equals(obj.getStr("name")))
+                    .filter(obj -> !maven.equals(obj.getName()))
                     .map(obj -> {
-                        String name = obj.getStr("name");
-                        String url = obj.getStr("url");
+                        String name = obj.getName();
+                        String url = obj.getUrl();
 
                         if (Optional.ofNullable(url).orElse("").contains("forge")) {
                             url = mirror.forge("https://maven.minecraftforge.net/" + Utils.mavenPath(name) + "/" + Utils.mavenFileName(name));

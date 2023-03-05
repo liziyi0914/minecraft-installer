@@ -91,6 +91,8 @@ public class MinecraftLibrariesTask implements Task {
                     .collect(Collectors.toList())
                     .blockingGet();
 
+            ctx.clearList(Identifiers.VAR_LIBRARY_FILES);
+
             log.info("下载完成，共有{}个库文件下载失败", fails.size());
 
             ctx.addAll(Identifiers.VAR_FILES_FAILED,fails);

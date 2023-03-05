@@ -84,9 +84,9 @@ public class ForgeVersionManifestTask implements Task {
             }
             JSONObject installerObj = installerOpt.get();
 
-            String installerUrl = "https://maven.minecraftforge.net/net/minecraftforge/forge/" +
+            String installerUrl = mirror.forge("https://maven.minecraftforge.net/net/minecraftforge/forge/" +
                     version + "-" + forgeVersion + Optional.ofNullable(forgeBranch).map(b -> "-" + b).orElse("") +
-                    "/forge-" + version + "-" + forgeVersion + Optional.ofNullable(forgeBranch).map(b -> "-" + b).orElse("") + "-installer.jar";
+                    "/forge-" + version + "-" + forgeVersion + Optional.ofNullable(forgeBranch).map(b -> "-" + b).orElse("") + "-installer.jar");
 
             log.info("Forge installer url: {}", installerUrl);
 

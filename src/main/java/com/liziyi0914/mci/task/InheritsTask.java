@@ -47,7 +47,7 @@ public class InheritsTask implements Task {
                 args.put("jvm", new ArrayList<>());
                 newVersion.setArguments(args);
             } else {
-                newVersion.setMinecraftArguments("");
+                newVersion.setMinecraftArguments(version.getMinecraftArguments());
             }
 
             newVersion.setLibraries(new ArrayList<>());

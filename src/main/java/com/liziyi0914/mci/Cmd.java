@@ -50,6 +50,9 @@ public class Cmd implements Callable<Integer> {
     @Option(names = {"--optifine"}, description = "OptiFine版本（type:patch，如：\"HD_U:E4\"）", required = false)
     String optifine;
 
+    @Option(names = {"--liteloader"}, description = "LiteLoader版本", required = false)
+    String liteloader;
+
     @Option(names = {"--ws-url"}, description = "WebSocket地址")
     String ws;
 
@@ -99,12 +102,8 @@ public class Cmd implements Callable<Integer> {
             executor.collector(webSocketCollector);
         }
 
-        if (Handlers.OPTIFINE.canHandle(this)) {
-            Handlers.OPTIFINE.handle(this, ctx, executor);
-        } else if (Handlers.FORGE.canHandle(this)) {
-            Handlers.FORGE.handle(this, ctx, executor);
-        } else if (Handlers.MINECRAFT.canHandle(this)) {
-            Handlers.MINECRAFT.handle(this, ctx, executor);
+        if (Handlers.DEFAULT.canHandle(this)) {
+            Handlers.DEFAULT.handle(this, ctx, executor);
         } else {
             log.error("找不到安装流程");
         }
