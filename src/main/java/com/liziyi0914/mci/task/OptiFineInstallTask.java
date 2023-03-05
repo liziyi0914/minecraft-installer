@@ -5,7 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.JarClassLoader;
 import com.liziyi0914.mci.Constants;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -38,17 +38,17 @@ public class OptiFineInstallTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        FileInfo optiFineInstaller = ctx.get(Identifiers.VAR_OPTIFINE_INSTALLER_FILE);
-        String id = ctx.get(Identifiers.VAR_ID);
-        Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
-        boolean mix = ctx.get(Identifiers.VAR_MIX);
-        Version version = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
-        String minecraftVersion = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
-        String optifineType = ctx.get(Identifiers.VAR_OPTIFINE_TYPE);
-        String optifinePatch = ctx.get(Identifiers.VAR_OPTIFINE_PATCH);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        FileInfo optiFineInstaller = ctx.get(Ids.VAR_OPTIFINE_INSTALLER_FILE);
+        String id = ctx.get(Ids.VAR_ID);
+        Mirror mirror = ctx.get(Ids.VAR_MIRROR);
+        boolean mix = ctx.get(Ids.VAR_MIX);
+        Version version = ctx.get(Ids.VAR_MINECRAFT_JSON);
+        String minecraftVersion = ctx.get(Ids.VAR_MINECRAFT_VERSION);
+        String optifineType = ctx.get(Ids.VAR_OPTIFINE_TYPE);
+        String optifinePatch = ctx.get(Ids.VAR_OPTIFINE_PATCH);
         String optifineVersion = minecraftVersion + "_" + optifineType + "_" + optifinePatch;
-        FileInfo jarFile = ctx.get(Identifiers.VAR_MINECRAFT_JAR_FILE);
+        FileInfo jarFile = ctx.get(Ids.VAR_MINECRAFT_JAR_FILE);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);

@@ -1,6 +1,6 @@
 package com.liziyi0914.mci.task;
 
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -31,7 +31,7 @@ public class RetryTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        List<FileInfo> infos = ctx.get(Identifiers.VAR_FILES_FAILED);
+        List<FileInfo> infos = ctx.get(Ids.VAR_FILES_FAILED);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);

@@ -1,6 +1,6 @@
 package com.liziyi0914.mci.task;
 
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -29,8 +29,8 @@ public class MinecraftLibrariesTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        List<FileInfo> libraryFiles = ctx.get(Identifiers.VAR_LIBRARY_FILES);
-        boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
+        List<FileInfo> libraryFiles = ctx.get(Ids.VAR_LIBRARY_FILES);
+        boolean override = ctx.get(Ids.VAR_OVERRIDE_EXISTS);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -91,11 +91,11 @@ public class MinecraftLibrariesTask implements Task {
                     .collect(Collectors.toList())
                     .blockingGet();
 
-            ctx.clearList(Identifiers.VAR_LIBRARY_FILES);
+            ctx.clearList(Ids.VAR_LIBRARY_FILES);
 
             log.info("下载完成，共有{}个库文件下载失败", fails.size());
 
-            ctx.addAll(Identifiers.VAR_FILES_FAILED,fails);
+            ctx.addAll(Ids.VAR_FILES_FAILED,fails);
         } catch (RuntimeException e) {
             log.error("Libraries任务执行失败",e);
             subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);

@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -35,13 +35,13 @@ public class ForgeOldInstallTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        FileInfo forgeInstaller = ctx.get(Identifiers.VAR_FORGE_INSTALLER_FILE);
-        String forgeVersion = ctx.get(Identifiers.VAR_FORGE_VERSION);
-        Version version = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
-        String id = ctx.get(Identifiers.VAR_ID);
-        Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
-        boolean mix = ctx.get(Identifiers.VAR_MIX);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        FileInfo forgeInstaller = ctx.get(Ids.VAR_FORGE_INSTALLER_FILE);
+        String forgeVersion = ctx.get(Ids.VAR_FORGE_VERSION);
+        Version version = ctx.get(Ids.VAR_MINECRAFT_JSON);
+        String id = ctx.get(Ids.VAR_ID);
+        Mirror mirror = ctx.get(Ids.VAR_MIRROR);
+        boolean mix = ctx.get(Ids.VAR_MIX);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -60,7 +60,7 @@ public class ForgeOldInstallTask implements Task {
             subTaskInfo.update(16384, "释放install_profile.json", SubTaskInfo.STATUS_RUNNING);
             Version forgeJson = installProfile.getJSONObject("versionInfo").toBean(Version.class);
             version = Utils.mixJson(version, forgeJson);
-            ctx.put(Identifiers.VAR_MINECRAFT_JSON, version);
+            ctx.put(Ids.VAR_MINECRAFT_JSON, version);
             log.info("install_profile.json释放完成");
 
             // 释放jar
@@ -112,7 +112,7 @@ public class ForgeOldInstallTask implements Task {
                                 .build();
                     })
                     .collect(Collectors.toList());
-            ctx.addAll(Identifiers.VAR_LIBRARY_FILES, libs);
+            ctx.addAll(Ids.VAR_LIBRARY_FILES, libs);
         } catch (IOException e) {
             log.error("forge installer file解析失败", e);
             subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);

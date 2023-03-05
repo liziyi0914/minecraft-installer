@@ -80,8 +80,8 @@ public class TaskExecutor {
         for (Task task : tasks) {
             subTaskInfos.addAll(Arrays.asList(task.getSubTaskInfos()));
         }
-        long taskId = context.get(Identifiers.VAR_TASK_ID);
-        String taskName = context.get(Identifiers.VAR_TASK_NAME);
+        long taskId = context.get(Ids.VAR_TASK_ID);
+        String taskName = context.get(Ids.VAR_TASK_NAME);
         TaskInfo taskInfo = new TaskInfo(taskId,taskName, "minecraft_install",subTaskInfos, TaskInfo.STATUS_PENDING);
 
         Disposable disposable = Flowable.interval(50, TimeUnit.MILLISECONDS)

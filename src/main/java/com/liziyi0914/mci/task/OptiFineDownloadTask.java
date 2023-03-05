@@ -1,6 +1,6 @@
 package com.liziyi0914.mci.task;
 
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -24,9 +24,9 @@ public class OptiFineDownloadTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        String minecraftVersion = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
-        String optifineType = ctx.get(Identifiers.VAR_OPTIFINE_TYPE);
-        String optifinePatch = ctx.get(Identifiers.VAR_OPTIFINE_PATCH);
+        String minecraftVersion = ctx.get(Ids.VAR_MINECRAFT_VERSION);
+        String optifineType = ctx.get(Ids.VAR_OPTIFINE_TYPE);
+        String optifinePatch = ctx.get(Ids.VAR_OPTIFINE_PATCH);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -46,7 +46,7 @@ public class OptiFineDownloadTask implements Task {
             }
 
             ctx.put(
-                    Identifiers.VAR_OPTIFINE_INSTALLER_FILE,
+                    Ids.VAR_OPTIFINE_INSTALLER_FILE,
                     FileInfo.builder()
                             .file(file)
                             .build()

@@ -5,7 +5,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.liziyi0914.mci.Constants;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
@@ -34,11 +34,11 @@ public class LiteLoaderInstallTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        String minecraftVersion = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
-        String liteLoaderVersion = ctx.get(Identifiers.VAR_LITE_LOADER_VERSION);
-        Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        Version version = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
+        String minecraftVersion = ctx.get(Ids.VAR_MINECRAFT_VERSION);
+        String liteLoaderVersion = ctx.get(Ids.VAR_LITE_LOADER_VERSION);
+        Mirror mirror = ctx.get(Ids.VAR_MIRROR);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        Version version = ctx.get(Ids.VAR_MINECRAFT_JSON);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);

@@ -4,7 +4,7 @@ import cn.hutool.core.annotation.Alias;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -34,9 +34,9 @@ public class MinecraftAssetIndexTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        FileInfo jsonFile = ctx.get(Identifiers.VAR_MINECRAFT_ASSET_INDEX_FILE);
+        Mirror mirror = ctx.get(Ids.VAR_MIRROR);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        FileInfo jsonFile = ctx.get(Ids.VAR_MINECRAFT_ASSET_INDEX_FILE);
         String url = jsonFile.getUrl();
         File file = jsonFile.getFile();
 
@@ -74,7 +74,7 @@ public class MinecraftAssetIndexTask implements Task {
 
             subTaskInfo.update(52428, "分析中", SubTaskInfo.STATUS_RUNNING);
 
-            ctx.put(Identifiers.VAR_MINECRAFT_ASSET_INDEX_VIRTUAL,assetIndex.getVirtual() || assetIndex.getMapToResources());
+            ctx.put(Ids.VAR_MINECRAFT_ASSET_INDEX_VIRTUAL,assetIndex.getVirtual() || assetIndex.getMapToResources());
             Function<AssetItem,File> getAssetFile;
             if (assetIndex.getVirtual() || assetIndex.getMapToResources()) {
                 getAssetFile = (item) -> FileUtil.file(
@@ -107,7 +107,7 @@ public class MinecraftAssetIndexTask implements Task {
                                 .build()
                 );
             });
-            ctx.put(Identifiers.VAR_MINECRAFT_ASSET_FILES,assetFiles);
+            ctx.put(Ids.VAR_MINECRAFT_ASSET_FILES,assetFiles);
         } catch (IOException e) {
             log.error("Minecraft AssetIndex任务执行失败",e);
             subTaskInfo.update(65535,"失败",SubTaskInfo.STATUS_FAIL);

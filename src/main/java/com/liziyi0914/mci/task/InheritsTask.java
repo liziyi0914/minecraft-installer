@@ -1,6 +1,6 @@
 package com.liziyi0914.mci.task;
 
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
@@ -22,12 +22,12 @@ public class InheritsTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        FileInfo jarFile = ctx.get(Identifiers.VAR_MINECRAFT_JAR_FILE);
-        Version json = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
-        String id = ctx.get(Identifiers.VAR_ID);
-        String minecraftId = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        Version version = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
+        FileInfo jarFile = ctx.get(Ids.VAR_MINECRAFT_JAR_FILE);
+        Version json = ctx.get(Ids.VAR_MINECRAFT_JSON);
+        String id = ctx.get(Ids.VAR_ID);
+        String minecraftId = ctx.get(Ids.VAR_MINECRAFT_VERSION);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        Version version = ctx.get(Ids.VAR_MINECRAFT_JSON);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -52,7 +52,7 @@ public class InheritsTask implements Task {
 
             newVersion.setLibraries(new ArrayList<>());
 
-            ctx.put(Identifiers.VAR_MINECRAFT_JSON,newVersion);
+            ctx.put(Ids.VAR_MINECRAFT_JSON,newVersion);
         } catch (Exception e) {
             log.error("版本继承任务执行失败",e);
             subTaskInfo.update(0, "失败", SubTaskInfo.STATUS_FAIL);

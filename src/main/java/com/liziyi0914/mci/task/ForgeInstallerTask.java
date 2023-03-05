@@ -1,6 +1,6 @@
 package com.liziyi0914.mci.task;
 
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -23,8 +23,8 @@ public class ForgeInstallerTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        FileInfo forgeInstaller = ctx.get(Identifiers.VAR_FORGE_INSTALLER_FILE);
-        boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
+        FileInfo forgeInstaller = ctx.get(Ids.VAR_FORGE_INSTALLER_FILE);
+        boolean override = ctx.get(Ids.VAR_OVERRIDE_EXISTS);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);

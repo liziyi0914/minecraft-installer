@@ -3,7 +3,7 @@ package com.liziyi0914.mci.task;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
 import com.liziyi0914.mci.bean.SubTaskInfo;
@@ -23,9 +23,9 @@ public class DumpVersionJsonTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        String id = ctx.get(Identifiers.VAR_ID);
-        Version json = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
+        String id = ctx.get(Ids.VAR_ID);
+        Version json = ctx.get(Ids.VAR_MINECRAFT_JSON);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);

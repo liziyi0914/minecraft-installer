@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -38,12 +38,12 @@ public class ForgeNewExtractTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        FileInfo forgeInstaller = ctx.get(Identifiers.VAR_FORGE_INSTALLER_FILE);
-        FileInfo mcJarFile = ctx.get(Identifiers.VAR_MINECRAFT_JAR_FILE);
-        String id = ctx.get(Identifiers.VAR_ID);
-        Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
-        boolean mix = ctx.get(Identifiers.VAR_MIX);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        FileInfo forgeInstaller = ctx.get(Ids.VAR_FORGE_INSTALLER_FILE);
+        FileInfo mcJarFile = ctx.get(Ids.VAR_MINECRAFT_JAR_FILE);
+        String id = ctx.get(Ids.VAR_ID);
+        Mirror mirror = ctx.get(Ids.VAR_MIRROR);
+        boolean mix = ctx.get(Ids.VAR_MIX);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -82,13 +82,13 @@ public class ForgeNewExtractTask implements Task {
                 // 合并json
 //                JSONObject baseJson = JSONUtil.parseObj(FileUtil.readUtf8String(jsonFile));
 //                forgeJson = Utils.mixJson(baseJson, forgeJson);
-                Version baseJson = ctx.get(Identifiers.VAR_MINECRAFT_JSON);
+                Version baseJson = ctx.get(Ids.VAR_MINECRAFT_JSON);
                 forgeJson = Utils.mixJson(baseJson, forgeJson);
             } else {
                 forgeJson.setId(id);
             }
-            ctx.put(Identifiers.VAR_MINECRAFT_JSON, forgeJson);
-            ctx.put(Identifiers.VAR_MINECRAFT_JSON_FILE, FileInfo
+            ctx.put(Ids.VAR_MINECRAFT_JSON, forgeJson);
+            ctx.put(Ids.VAR_MINECRAFT_JSON_FILE, FileInfo
                     .builder()
                     .file(jsonFile)
                     .build()
@@ -193,7 +193,7 @@ public class ForgeNewExtractTask implements Task {
                         })
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
-                ctx.addAll(Identifiers.VAR_LIBRARY_FILES, libs);
+                ctx.addAll(Ids.VAR_LIBRARY_FILES, libs);
             }
             log.info("libraries添加完成");
 
@@ -233,7 +233,7 @@ public class ForgeNewExtractTask implements Task {
                                     .build();
                         })
                         .collect(Collectors.toList());
-                ctx.addAll(Identifiers.VAR_LIBRARY_FILES, libs);
+                ctx.addAll(Ids.VAR_LIBRARY_FILES, libs);
             }
             log.info("libraries添加完成");
 
@@ -269,15 +269,15 @@ public class ForgeNewExtractTask implements Task {
 
                 log.info("找到变量: {}, 原始值: {}, 解析值: {}", key, rawValue, value);
 
-                ctx.mapPut(Identifiers.VAR_FORGE_VARS, key, value);
+                ctx.mapPut(Ids.VAR_FORGE_VARS, key, value);
             });
-            ctx.mapPut(Identifiers.VAR_FORGE_VARS, "MINECRAFT_JAR", mcJarFile.getFile().getCanonicalPath());
+            ctx.mapPut(Ids.VAR_FORGE_VARS, "MINECRAFT_JAR", mcJarFile.getFile().getCanonicalPath());
             log.info("变量表保存完成");
 
             // 保存修补器列表
             log.info("开始保存修补器列表");
             subTaskInfo.update(57344, "保存修补器", SubTaskInfo.STATUS_RUNNING);
-            ctx.put(Identifiers.VAR_FORGE_PROCESSORS, installProfile.getJSONArray("processors"));
+            ctx.put(Ids.VAR_FORGE_PROCESSORS, installProfile.getJSONArray("processors"));
         } catch (IOException e) {
             log.error("forge installer file解析失败", e);
             subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);

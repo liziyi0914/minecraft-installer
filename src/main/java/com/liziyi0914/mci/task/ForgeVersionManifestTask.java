@@ -3,7 +3,7 @@ package com.liziyi0914.mci.task;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -28,11 +28,11 @@ public class ForgeVersionManifestTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        String version = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
-        long forgeBuild = ctx.get(Identifiers.VAR_FORGE_BUILD);
-        String id = ctx.get(Identifiers.VAR_ID);
+        Mirror mirror = ctx.get(Ids.VAR_MIRROR);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        String version = ctx.get(Ids.VAR_MINECRAFT_VERSION);
+        long forgeBuild = ctx.get(Ids.VAR_FORGE_BUILD);
+        String id = ctx.get(Ids.VAR_ID);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -71,8 +71,8 @@ public class ForgeVersionManifestTask implements Task {
             log.info("目标Forge版本: {}", forgeVersion);
             log.info("目标Forge分支: {}", forgeBranch);
 
-            ctx.put(Identifiers.VAR_FORGE_VERSION, forgeVersion);
-            ctx.put(Identifiers.VAR_FORGE_BRANCH, forgeBranch);
+            ctx.put(Ids.VAR_FORGE_VERSION, forgeVersion);
+            ctx.put(Ids.VAR_FORGE_BRANCH, forgeBranch);
 
             Optional<JSONObject> installerOpt = versionObj.getJSONArray("files")
                     .toList(JSONObject.class)
@@ -91,7 +91,7 @@ public class ForgeVersionManifestTask implements Task {
             log.info("Forge installer url: {}", installerUrl);
 
             ctx.put(
-                    Identifiers.VAR_FORGE_INSTALLER_FILE,
+                    Ids.VAR_FORGE_INSTALLER_FILE,
                     FileInfo.builder()
                             .url(mirror.forge(installerUrl))
                             .hash(installerObj.getStr("hash"))

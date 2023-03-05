@@ -2,7 +2,7 @@ package com.liziyi0914.mci.task;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONUtil;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -32,10 +32,10 @@ public class MinecraftJsonTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        String id = ctx.get(Identifiers.VAR_ID);
-        FileInfo jsonFile = ctx.get(Identifiers.VAR_MINECRAFT_JSON_FILE);
+        Mirror mirror = ctx.get(Ids.VAR_MIRROR);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        String id = ctx.get(Ids.VAR_ID);
+        FileInfo jsonFile = ctx.get(Ids.VAR_MINECRAFT_JSON_FILE);
         String url = jsonFile.getUrl();
         File file = jsonFile.getFile();
 
@@ -65,7 +65,7 @@ public class MinecraftJsonTask implements Task {
 
             Version json = JSONUtil.toBean(jsonString, Version.class);
             json.setId(id);
-            ctx.put(Identifiers.VAR_MINECRAFT_JSON, json);
+            ctx.put(Ids.VAR_MINECRAFT_JSON, json);
 
             log.info("Minecraft JSON文件写入完成");
 
@@ -74,7 +74,7 @@ public class MinecraftJsonTask implements Task {
             {
                 Download obj = json.getDownloads().get("client");
                 ctx.put(
-                        Identifiers.VAR_MINECRAFT_JAR_FILE,
+                        Ids.VAR_MINECRAFT_JAR_FILE,
                         FileInfo.builder()
                                 .url(mirror.minecraftJar(obj.getUrl()))
                                 .hash(obj.getSha1())
@@ -90,7 +90,7 @@ public class MinecraftJsonTask implements Task {
             {
                 Version._AssetIndex obj = json.getAssetIndex();
                 ctx.put(
-                        Identifiers.VAR_MINECRAFT_ASSET_INDEX_FILE,
+                        Ids.VAR_MINECRAFT_ASSET_INDEX_FILE,
                         FileInfo.builder()
                                 .name(obj.getId() + ".json")
                                 .url(mirror.minecraftAssetIndex(obj.getUrl()))
@@ -160,7 +160,7 @@ public class MinecraftJsonTask implements Task {
                         .distinct()
                         .peek(fileInfo -> log.info("Minecraft Library文件: {}", fileInfo.getName()))
                         .collect(Collectors.toList());
-                ctx.put(Identifiers.VAR_LIBRARY_FILES, list);
+                ctx.put(Ids.VAR_LIBRARY_FILES, list);
             }
 
             subTaskInfo.update(57343, "解析中", SubTaskInfo.STATUS_RUNNING);
@@ -171,7 +171,7 @@ public class MinecraftJsonTask implements Task {
                         .map(obj -> obj.getJSONObject("file"))
                         .ifPresent(obj -> {
                             ctx.put(
-                                    Identifiers.VAR_MINECRAFT_LOG4J_FILE,
+                                    Ids.VAR_MINECRAFT_LOG4J_FILE,
                                     FileInfo.builder()
                                             .name(obj.getStr("id"))
                                             .url(mirror.minecraftLog4j(obj.getStr("url")))

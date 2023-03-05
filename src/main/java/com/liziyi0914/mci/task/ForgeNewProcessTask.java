@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.JarClassLoader;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
@@ -30,7 +30,7 @@ public class ForgeNewProcessTask implements Task {
     SubTaskInfo info;
 
     void execProcessor(JSONObject processor, InstallContext ctx) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
 
         try (JarClassLoader loader = new JarClassLoader()) {
             String jar = processor.getStr("jar");
@@ -84,7 +84,7 @@ public class ForgeNewProcessTask implements Task {
                             }
                         } else if (value.startsWith("{") && value.endsWith("}")) {
                             String tmp = value.substring(1,value.length() - 1);
-                            value = ctx.mapGet(Identifiers.VAR_FORGE_VARS, tmp);
+                            value = ctx.mapGet(Ids.VAR_FORGE_VARS, tmp);
                         }
                         return value;
                     }).toArray(String[]::new);
@@ -105,12 +105,12 @@ public class ForgeNewProcessTask implements Task {
                     String value = outputs.getStr(_key);
                     if (value.startsWith("{") && value.endsWith("}")) {
                         String tmp = value.substring(1,value.length() - 1);
-                        value = ctx.mapGet(Identifiers.VAR_FORGE_VARS, tmp);
+                        value = ctx.mapGet(Ids.VAR_FORGE_VARS, tmp);
                     }
                     String key = _key;
                     if (key.startsWith("{") && key.endsWith("}")) {
                         String tmp = key.substring(1,key.length() - 1);
-                        key = ctx.mapGet(Identifiers.VAR_FORGE_VARS, tmp);
+                        key = ctx.mapGet(Ids.VAR_FORGE_VARS, tmp);
                     }
                     if (!Utils.checkHash(value, FileUtil.file(key))) {
                         throw new RuntimeException("修补器 " + jar + " 校验失败");
@@ -124,7 +124,7 @@ public class ForgeNewProcessTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        JSONArray processors = ctx.get(Identifiers.VAR_FORGE_PROCESSORS);
+        JSONArray processors = ctx.get(Ids.VAR_FORGE_PROCESSORS);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);

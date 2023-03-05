@@ -1,6 +1,6 @@
 package com.liziyi0914.mci.task;
 
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -29,8 +29,8 @@ public class MinecraftAssetsTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        List<FileInfo> assetFiles = ctx.get(Identifiers.VAR_MINECRAFT_ASSET_FILES);
-        boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
+        List<FileInfo> assetFiles = ctx.get(Ids.VAR_MINECRAFT_ASSET_FILES);
+        boolean override = ctx.get(Ids.VAR_OVERRIDE_EXISTS);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -93,7 +93,7 @@ public class MinecraftAssetsTask implements Task {
 
             log.info("下载完成，共有{}个资源文件下载失败", fails.size());
 
-            ctx.addAll(Identifiers.VAR_FILES_FAILED,fails);
+            ctx.addAll(Ids.VAR_FILES_FAILED,fails);
         } catch (RuntimeException e) {
             log.error("Minecraft Assets任务执行失败",e);
             subTaskInfo.update(65535, "失败", SubTaskInfo.STATUS_FAIL);

@@ -73,26 +73,26 @@ public class Cmd implements Callable<Integer> {
 
         switch (getMirror().toLowerCase()) {
             case "bmclapi":
-                ctx.put(Identifiers.VAR_MIRROR, Mirrors.BMCLAPI);
+                ctx.put(Ids.VAR_MIRROR, Mirrors.BMCLAPI);
                 break;
             case "mcbbs":
-                ctx.put(Identifiers.VAR_MIRROR, Mirrors.MCBBS);
+                ctx.put(Ids.VAR_MIRROR, Mirrors.MCBBS);
                 break;
             default:
-                ctx.put(Identifiers.VAR_MIRROR, Mirrors.OFFICIAL);
+                ctx.put(Ids.VAR_MIRROR, Mirrors.OFFICIAL);
         }
 
-        ctx.put(Identifiers.VAR_MINECRAFT_ROOT, getRoot().toPath());
-        ctx.put(Identifiers.VAR_MINECRAFT_VERSION, getMinecraft());
-        ctx.put(Identifiers.VAR_ID, getId());
+        ctx.put(Ids.VAR_MINECRAFT_ROOT, getRoot().toPath());
+        ctx.put(Ids.VAR_MINECRAFT_VERSION, getMinecraft());
+        ctx.put(Ids.VAR_ID, getId());
 
-        ctx.put(Identifiers.VAR_OVERRIDE_EXISTS, isOverride());
+        ctx.put(Ids.VAR_OVERRIDE_EXISTS, isOverride());
 
-        ctx.put(Identifiers.VAR_TASK_ID, new Random().nextLong());
+        ctx.put(Ids.VAR_TASK_ID, new Random().nextLong());
 
-        ctx.put(Identifiers.VAR_MULTI_THREAD, isMultiThread());
+        ctx.put(Ids.VAR_MULTI_THREAD, isMultiThread());
 
-        ctx.put(Identifiers.VAR_MIX, isMix());
+        ctx.put(Ids.VAR_MIX, isMix());
 
         TaskExecutor executor = new TaskExecutor();
 

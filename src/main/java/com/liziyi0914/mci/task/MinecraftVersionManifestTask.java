@@ -3,7 +3,7 @@ package com.liziyi0914.mci.task;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -27,10 +27,10 @@ public class MinecraftVersionManifestTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        Mirror mirror = ctx.get(Identifiers.VAR_MIRROR);
-        Path minecraftRoot = ctx.get(Identifiers.VAR_MINECRAFT_ROOT);
-        String version = ctx.get(Identifiers.VAR_MINECRAFT_VERSION);
-        String id = ctx.get(Identifiers.VAR_ID);
+        Mirror mirror = ctx.get(Ids.VAR_MIRROR);
+        Path minecraftRoot = ctx.get(Ids.VAR_MINECRAFT_ROOT);
+        String version = ctx.get(Ids.VAR_MINECRAFT_VERSION);
+        String id = ctx.get(Ids.VAR_ID);
 
         SubTaskInfo subTaskInfo = getInfo();
         subTaskInfo.update(0, "开始执行", SubTaskInfo.STATUS_RUNNING);
@@ -66,7 +66,7 @@ public class MinecraftVersionManifestTask implements Task {
             log.info("目标版本JSON: {}", versionObj.getStr("url"));
 
             ctx.put(
-                    Identifiers.VAR_MINECRAFT_JSON_FILE,
+                    Ids.VAR_MINECRAFT_JSON_FILE,
                     FileInfo.builder()
                             .url(mirror.minecraftJson(versionObj.getStr("url")))
                             .hash(versionObj.getStr("sha1"))

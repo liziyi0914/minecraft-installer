@@ -1,6 +1,6 @@
 package com.liziyi0914.mci.task;
 
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.bean.InstallContext;
 import com.liziyi0914.mci.bean.InstallResult;
 import com.liziyi0914.mci.bean.SubTaskInfo;
@@ -25,7 +25,7 @@ public class MultiTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        boolean multiThread = ctx.get(Identifiers.VAR_MULTI_THREAD);
+        boolean multiThread = ctx.get(Ids.VAR_MULTI_THREAD);
 
         boolean success;
         if (multiThread) {

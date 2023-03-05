@@ -1,6 +1,6 @@
 package com.liziyi0914.mci.task;
 
-import com.liziyi0914.mci.Identifiers;
+import com.liziyi0914.mci.Ids;
 import com.liziyi0914.mci.Utils;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.InstallContext;
@@ -23,8 +23,8 @@ public class MinecraftJarTask implements Task {
 
     @Override
     public InstallResult execute(InstallContext ctx) {
-        FileInfo jarFile = ctx.get(Identifiers.VAR_MINECRAFT_JAR_FILE);
-        boolean override = ctx.get(Identifiers.VAR_OVERRIDE_EXISTS);
+        FileInfo jarFile = ctx.get(Ids.VAR_MINECRAFT_JAR_FILE);
+        boolean override = ctx.get(Ids.VAR_OVERRIDE_EXISTS);
         String url = jarFile.getUrl();
         File file = jarFile.getFile();
 
