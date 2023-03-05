@@ -47,4 +47,14 @@ public class OfficialMirror extends Mirror {
         return url;
     }
 
+    @Override
+    public String fabric(String url) {
+        return url;
+    }
+
+    @Override
+    public String quilt(String url) {
+        return url;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.liziyi0914.mci;
 
 import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.liziyi0914.mci.bean.FileInfo;
 import com.liziyi0914.mci.bean.minecraft.Version;
 import com.liziyi0914.mci.mirror.Mirror;
@@ -128,5 +129,19 @@ public class Ids {
     /** LityLoader Version
      */
     public static final Identifier<String> VAR_LITE_LOADER_VERSION = Identifier.of(String.class);
+
+
+
+    /** Fabric Version
+     */
+    public static final Identifier<String> VAR_FABRIC_VERSION = Identifier.of(String.class);
+
+    /** Fabric Meta
+     */
+    public static final Identifier<JSONObject> VAR_FABRIC_META = Identifier.of(JSONObject.class);
+
+    /** isQuilt
+     */
+    public static final Identifier<Boolean> VAR_QUILT = Identifier.of(Boolean.class);
 
 }

@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -47,5 +49,13 @@ public class Version {
         int totalSize;
         String url;
 
+    }
+
+    public void addTweakClass(String cls) {
+        if (Objects.isNull(getArguments())) {
+            setMinecraftArguments(getMinecraftArguments()+" --tweakClass "+cls);
+        } else {
+            getArguments().get("game").addAll(Arrays.asList("--tweakClass", cls));
+        }
     }
 }

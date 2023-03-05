@@ -4,4 +4,6 @@ public class Handlers {
 
     public static final Handler DEFAULT = new DefaultHandler();
 
+    public static final Handler FABRIC = new FabricHandler();
+
 }

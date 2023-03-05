@@ -18,4 +18,8 @@ public abstract class Mirror {
     public abstract String forge(String url);
 
     public abstract String liteLoader(String url);
+
+    public abstract String fabric(String url);
+
+    public abstract String quilt(String url);
 }

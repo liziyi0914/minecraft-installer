@@ -43,7 +43,8 @@ public class DefaultHandler implements Handler {
                         new MinecraftAssetsTask(new SubTaskInfo("下载Assets", 0xff)),
                         new MinecraftLibrariesTask(new SubTaskInfo("下载Libraries", 0xff))
                 )
-                .then(new DumpVersionJsonTask(new SubTaskInfo("写入版本Json", 0xff)));
+                .then(new DumpVersionJsonTask(new SubTaskInfo("写入版本Json", 0xff)))
+                .then(new RetryTask(new SubTaskInfo("重试下载文件", 0xff)));
 
         executor.then(new VarTask<>(Ids.VAR_ID, id));
 

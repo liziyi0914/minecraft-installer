@@ -95,6 +95,9 @@ public class Utils {
                 .build();
 
         Response response = client.newCall(request).execute();
+        if (response.code()!=200) {
+            throw new IOException();
+        }
         ResponseBody body = response.body();
         if (Objects.isNull(body)) {
             throw new IOException();

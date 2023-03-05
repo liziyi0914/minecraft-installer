@@ -23,8 +23,6 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -176,11 +174,7 @@ public class OptiFineInstallTask implements Task {
                 );
             }
 
-            if (Objects.isNull(version.getArguments())) {
-                version.setMinecraftArguments(version.getMinecraftArguments()+" --tweakClass optifine.OptiFineTweaker");
-            } else {
-                version.getArguments().get("game").addAll(Arrays.asList("--tweakClass", "optifine.OptiFineTweaker"));
-            }
+            version.addTweakClass("optifine.OptiFineTweaker");
 
             version.setMainClass(Constants.LAUNCH_WRAPPER_MAIN);
         } catch (Exception e) {

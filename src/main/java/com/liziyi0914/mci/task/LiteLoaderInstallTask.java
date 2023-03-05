@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -118,11 +117,7 @@ public class LiteLoaderInstallTask implements Task {
                 );
             }
 
-            if (Objects.isNull(version.getArguments())) {
-                version.setMinecraftArguments(version.getMinecraftArguments()+" --tweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker");
-            } else {
-                version.getArguments().get("game").addAll(Arrays.asList("--tweakClass", "com.mumfrey.liteloader.launch.LiteLoaderTweaker"));
-            }
+            version.addTweakClass("com.mumfrey.liteloader.launch.LiteLoaderTweaker");
 
             version.setMainClass(Constants.LAUNCH_WRAPPER_MAIN);
         } catch (IOException e) {
