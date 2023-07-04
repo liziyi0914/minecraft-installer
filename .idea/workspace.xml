@@ -4,22 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="69680aa5-32b2-4440-a1e3-e2b2c62d3f0a" name="变更" comment="重命名Identifiers">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/FabricHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/FabricInstallTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/FabricMetaTask.java" afterDir="false" />
+    <list default="true" id="69680aa5-32b2-4440-a1e3-e2b2c62d3f0a" name="变更" comment="支持Fabric&#10;支持Quilt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Cmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Cmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Ids.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Ids.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/minecraft/Version.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/bean/minecraft/Version.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/DefaultHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/DefaultHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/Handlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/handler/Handlers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/BmclapiMirror.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/BmclapiMirror.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/Mirror.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/Mirror.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/OfficialMirror.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/mirror/OfficialMirror.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/LiteLoaderInstallTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/LiteLoaderInstallTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/OptiFineInstallTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/OptiFineInstallTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeNewExtractTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeNewExtractTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeNewProcessTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liziyi0914/mci/task/ForgeNewProcessTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +39,24 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="minecraft-installer" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="minecraft-installer" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="application" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="minecraft-installer" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="minecraft-installer" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="shadow" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -127,7 +133,7 @@
       <recent name="com.liziyi0914.mci.mirror" />
     </key>
   </component>
-  <component name="RunManager" selected="应用程序.1.16.5-quilt">
+  <component name="RunManager" selected="应用程序.1.16.5-forge">
     <configuration name="1.16.5-OptiFine_HD_U_G8-Forge-mix" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.liziyi0914.mci.Main" />
       <module name="minecraft-installer.main" />
@@ -558,7 +564,11 @@
       <workItem from="1677417134799" duration="598000" />
       <workItem from="1677684962297" duration="28634000" />
       <workItem from="1677741906736" duration="8540000" />
-      <workItem from="1677824505183" duration="25438000" />
+      <workItem from="1677824505183" duration="26007000" />
+      <workItem from="1678092610601" duration="349000" />
+      <workItem from="1678704168112" duration="3389000" />
+      <workItem from="1679934325820" duration="3710000" />
+      <workItem from="1688490562640" duration="213000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1673486480858</created>
@@ -623,7 +633,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677981488445</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="支持Fabric&#10;支持Quilt">
+      <created>1677989399493</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1677989399493</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -649,7 +666,8 @@
     <MESSAGE value="支持OptiFine" />
     <MESSAGE value="支持LiteLoader" />
     <MESSAGE value="重命名Identifiers" />
-    <option name="LAST_COMMIT_MESSAGE" value="重命名Identifiers" />
+    <MESSAGE value="支持Fabric&#10;支持Quilt" />
+    <option name="LAST_COMMIT_MESSAGE" value="支持Fabric&#10;支持Quilt" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">

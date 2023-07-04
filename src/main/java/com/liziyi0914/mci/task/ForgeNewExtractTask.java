@@ -105,7 +105,7 @@ public class ForgeNewExtractTask implements Task {
                 ).toPath();
                 String sourceDirectoryPath = "maven/";
                 try (ZipInputStream zis = new ZipInputStream(FileUtil.getInputStream(file))) {
-                    ZipEntry entry = null;
+                    ZipEntry entry;
                     while ((entry = zis.getNextEntry()) != null) {
                         // 如果entry不是指定目录下的项，则跳过
                         if (!entry.getName().startsWith(sourceDirectoryPath)) {
@@ -271,6 +271,7 @@ public class ForgeNewExtractTask implements Task {
 
                 ctx.mapPut(Ids.VAR_FORGE_VARS, key, value);
             });
+            ctx.mapPut(Ids.VAR_FORGE_VARS, "SIDE", "client");
             ctx.mapPut(Ids.VAR_FORGE_VARS, "MINECRAFT_JAR", mcJarFile.getFile().getCanonicalPath());
             log.info("变量表保存完成");
 

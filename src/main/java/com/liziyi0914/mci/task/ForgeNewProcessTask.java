@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.jar.JarFile;
 
@@ -36,6 +37,14 @@ public class ForgeNewProcessTask implements Task {
             String jar = processor.getStr("jar");
 
             log.info("修补器: {}", jar);
+
+            if(processor.containsKey("sides")) {
+                List<String> sides = processor.getJSONArray("sides").toList(String.class);
+                if (!sides.contains("client")) {
+                    log.info("非客户端修补器，跳过");
+                    return;
+                }
+            }
 
             File mainFile = FileUtil.file(
                     minecraftRoot.toFile(),
